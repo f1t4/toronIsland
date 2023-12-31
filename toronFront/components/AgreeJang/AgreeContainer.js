@@ -135,10 +135,12 @@ const AgreeContainer =()=>{
     //   };
     //   fetchData();
     // }, []);  
-    const [data, setData] = useState([
-      { id: '1', text1: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 1},
 
-    ]);
+    
+    // const [data, setData] = useState([
+    //   { id: '1', text1: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 1},
+
+    // ]);
     const randomText = ({ item }) => (
       <View style={styles.textBox}> 
         <Text style={styles.text}>{item.text1}</Text>
