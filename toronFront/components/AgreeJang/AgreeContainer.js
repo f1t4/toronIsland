@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 
 
+
 const AgreeContainer =()=>{
   const styles = StyleSheet.create({
         container: {
@@ -119,31 +120,31 @@ const AgreeContainer =()=>{
             marginBottom: 30
           }
     });
-    // // api에게 받아온 값을 변경할 useState()
-    // const [ chatData, setChatData ] = useState('');
-    // 마운트 
-    // useEffect(()=>{
-    //   const fetchData = async () => {
-    //     try{
-    //       // 아래 서버로부터 응답 받음 
-    //         const response = await axios.get('htt://localhost:3000/getRandomDebateTopic');
-    //       // 받은 값을 chatData에 부여해 주기 위해 setChatData로 전송   
-    //         setChatData(response.data.chatData);
-    //     }catch(error){
-    //         console.log(error);
-    //     }
-    //   };
-    //   fetchData();
-    // }, []);  
-
+    
     
     // const [data, setData] = useState([
     //   { id: '1', text1: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 1},
 
     // ]);
+
+    const [message, setMessage] = useState('');
+
+  //   useEffect(() => {
+  //   // AgreeContainer 엔드포인트로 GET 요청 보내기
+  //   fetch('http://localhost:3001/AgreeContainer')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       // 서버에서 전송한 데이터를 처리
+  //       setMessage(data.message);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //       setMessage('서버와의 통신 중 오류가 발생했습니다.');
+  //     });
+  // }, []);
     const randomText = ({ item }) => (
       <View style={styles.textBox}> 
-        <Text style={styles.text}>{item.text1}</Text>
+        <Text style={styles.text}>{item.text}</Text>
       </View>
     )
 
@@ -161,7 +162,7 @@ const AgreeContainer =()=>{
             {/* <ScrollView style={styles.textBox}> */}
             {/* // 서버로 전송 받은 채팅 데이터 화면에 출력 */}
             <FlatList
-             data={data}
+            // data={message}
              renderItem={randomText}
              keyExtractor={(item) => item.id}
             >
