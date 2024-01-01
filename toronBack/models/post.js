@@ -8,7 +8,7 @@ const connection = mysqlModule.init();
 
 // 데베 데이터 insert 후 가져올 때 board_id를 기준으로 order by 필수
 // 아래 id 값은 임시 테스트를 위한 값 실제로는 DB에서 자동 count
-let data = [
+let toronData = [
     {id: 1, text: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 0},
     {id: 2, text: '정대만이랑 연애 \n vs \n 이명헌이랑 연애', state: 0}
 ];
@@ -25,11 +25,9 @@ let data = [
 //     return data;
 // }
 
-// module.exports ={
-//     addPost,
-//     updatePost,
-//     getPost
-// }
+module.exports ={
+    toronData
+}
 
 // sql에 쿼리문 전송 
 
