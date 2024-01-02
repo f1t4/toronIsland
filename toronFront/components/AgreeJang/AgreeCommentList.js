@@ -9,7 +9,7 @@ const AgreeCommentList = () => {
         // 서버에서 댓글 목록을 가져와서 setComments로 업데이트
         const fetchComments = async () => {
           try {
-            const response = await fetch('http://192.168.35.243:3000/comments'); // //놑북IPv4 주소를 넣어야 오류가 안 생기더라구요...? 원래 이런건가
+            const response = await fetch('http://localhost:3000/comments'); // //놑북IPv4 주소를 넣어야 오류가 안 생기더라구요...? 원래 이런건가
             const data = await response.json();
             setComments(data);
           } catch (error) {

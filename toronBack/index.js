@@ -65,6 +65,10 @@ app.post('/comments', (req, res) => {
   res.json(newComment);
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// //지현
+// const commentController = require('./controllers/commentController');
+// app.use('/api', commentController);
+
+// app.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
