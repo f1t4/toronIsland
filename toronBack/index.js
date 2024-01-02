@@ -42,7 +42,6 @@ app.get('/getTopics', (req, res) => {
 });
 
 
-
 app.get('/comments', (req, res) => {
   res.json(comments);
 });

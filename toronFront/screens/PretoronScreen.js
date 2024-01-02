@@ -5,15 +5,10 @@ import ToronCard from '../components/Pretoron/PretoronCard.js';
 import { LinearGradient } from "expo-linear-gradient";
 import axios from 'axios';
 
-//[채원 : 검색하면 나오는 페이지 & 이전토론 페이지 입니다. 윤기언니의 베스트토론 가져다 변형한것
-//        ui 수정, 검색기능 추가 예정, 참여자수 반영은 안되어있음 주제만 되어있음]
-
-
-
 //주제 넣어주는 함수
 const fetchTopics = async () => {
   try {
-    const response = await axios.get('http://localhost:3001//getTopics');
+    const response = await axios.get('http://localhost:3001/getTopics');
     return response.data;
   } catch (error) {
     console.error('Error fetching topics:', error);
