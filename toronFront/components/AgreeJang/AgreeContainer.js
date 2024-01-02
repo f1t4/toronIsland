@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 
 
+
 const AgreeContainer =()=>{
   const styles = StyleSheet.create({
         container: {
@@ -35,14 +36,20 @@ const AgreeContainer =()=>{
             marginTop: 10,
             marginBottom: 3,
             padding: 20,
-            height: 100,
-            // backgroundColor: 'pink'
+            height: "100%",
+            // backgroundColor: 'pink',
+            // flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
           },
           text:{
             fontSize: 17,
             color: 'black',
             fontWeight: '900',
             // marginLeft: '20%'
+          },
+          vs:{
+            
           },
           contentBox:{
             backgroundColor: 'white',
@@ -98,12 +105,12 @@ const AgreeContainer =()=>{
             justifyContent: 'center',
           },
           Agree:{
-            fontSize: 13,
+            fontSize: 10,
             margin: 3,
             fontWeight: '600'
           },
           disAgree:{
-            fontSize: 13,
+            fontSize: 10,
             margin: 3,
             fontWeight: '600'
           },
@@ -113,28 +120,28 @@ const AgreeContainer =()=>{
             marginBottom: 30
           }
     });
-    // // api에게 받아온 값을 변경할 useState()
-    // const [ chatData, setChatData ] = useState('');
-    // 마운트 
-    // useEffect(()=>{
-    //   const fetchData = async () => {
-    //     try{
-    //       // 아래 서버로부터 응답 받음 
-    //         const response = await axios.get('htt://localhost:3000/getRandomDebateTopic');
-    //       // 받은 값을 chatData에 부여해 주기 위해 setChatData로 전송   
-    //         setChatData(response.data.chatData);
-    //     }catch(error){
-    //         console.log(error);
-    //     }
-    //   };
-    //   fetchData();
-    // }, []);  
-    const [data, setData] = useState([
-      // { id: '1', text: '매일 혼밥하기\n vs. \n매일 단체로 식사하기' },
-      // { id: '2', text: '송강호 떡 사주기 vs. 송강 호떡 사주기' },
-      { id: '3', text: '현재 대한민국 장애인 복지에 대해 어떻게 생각하시나요?' },
-      // ... 추가적인 아이템들
-    ]);
+    
+    
+    // const [data, setData] = useState([
+    //   { id: '1', text1: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 1},
+
+    // ]);
+
+    const [message, setMessage] = useState('');
+
+  //   useEffect(() => {
+  //   // AgreeContainer 엔드포인트로 GET 요청 보내기
+  //   fetch('http://localhost:3001/AgreeContainer')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       // 서버에서 전송한 데이터를 처리
+  //       setMessage(data.message);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //       setMessage('서버와의 통신 중 오류가 발생했습니다.');
+  //     });
+  // }, []);
     const randomText = ({ item }) => (
       <View style={styles.textBox}> 
         <Text style={styles.text}>{item.text}</Text>
@@ -145,42 +152,41 @@ const AgreeContainer =()=>{
         <View style={[styles.container,{flexDirection: 'row',}]}>
       
 
-        <View style={styles.contentBox}>
-          <View style={styles.goRight}>
-            <View style={styles.hapBox}>
-              <Text style={styles.hap}>현재 n명 참여</Text>
+          <View style={styles.contentBox}>
+            <View style={styles.goRight}>
+              <View style={styles.hapBox}>
+                <Text style={styles.hap}>현재 n명 참여</Text>
+              </View>
             </View>
-          </View>
         
-          {/* <ScrollView style={styles.textBox}> */}
+            {/* <ScrollView style={styles.textBox}> */}
             {/* // 서버로 전송 받은 채팅 데이터 화면에 출력 */}
             <FlatList
-             data={data}
+            // data={message}
              renderItem={randomText}
              keyExtractor={(item) => item.id}
             >
             </FlatList>
-          {/* </ScrollView> */}
+            
+            {/* </ScrollView> */}
 
-          <View style={styles.AgreeButton}>
-          <TouchableOpacity style={styles.AgreeBox} >
-            <Image style={styles.goodImage} source={require('../../assets/good.png')}></Image>
-            <Text style={styles.Agree}>찬성</Text>
-          </TouchableOpacity>
+            <View style={styles.AgreeButton}>
+              <TouchableOpacity style={styles.AgreeBox} >
+                <Image style={styles.goodImage} source={require('../../assets/good.png')}></Image>
+                  <Text style={styles.Agree}>뭐라</Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity style={styles.disAgreeBox} >
-            <Image style={styles.badImage} source={require('../../assets/bad.png')}></Image>
-            <Text style={styles.disAgree}>반대</Text>
-          </TouchableOpacity>
-          </View>
+              <TouchableOpacity style={styles.disAgreeBox} >
+                <Image style={styles.badImage} source={require('../../assets/bad.png')}></Image>
+                  <Text style={styles.disAgree}>하지</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.deadLineBox}>
-            <Text style={styles.deadLineText}>n일 뒤에 종료됩니다.</Text>
-         </View>
-         </View>
-
-    
-          <StatusBar style="auto" />
+              <View style={styles.deadLineBox}>
+                <Text style={styles.deadLineText}>n일 뒤에 종료됩니다.</Text>
+              </View>
+              </View>
+            <StatusBar style="auto" />
       </View>
     )
 }
