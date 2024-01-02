@@ -25,6 +25,23 @@ app.use('/', userRoutes);
 //   res.send('Hello World!');
 // });
 
+//[채원] PretoronScreen
+// const db = require('./db'); 
+
+// GET route to fetch topics
+app.get('/getTopics', (req, res) => {
+  const sql = 'SELECT * FROM board';
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.json(result);
+    }
+  });
+});
+
+
 app.get('/comments', (req, res) => {
   res.json(comments);
 });
