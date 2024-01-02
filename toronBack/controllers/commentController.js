@@ -6,10 +6,10 @@ const mysql = require('mysql2');
 
 const router = express.Router();
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Jiok0116!',
-  database: 'Toron',
+  host: '',
+  user: '',
+  password: '',
+  database: '',
 });
 
 //MySQL 연결
