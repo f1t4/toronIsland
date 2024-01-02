@@ -3,8 +3,6 @@ import { FlatList, StyleSheet, Text, View, StatusBar, Button, Image, TouchableOp
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-
-
 const AgreeContainer =()=>{
   const styles = StyleSheet.create({
         container: {
@@ -43,9 +41,9 @@ const AgreeContainer =()=>{
             alignItems: 'center'
           },
           text:{
-            fontSize: 17,
+            fontSize: 16,
             color: 'black',
-            fontWeight: '900',
+            fontWeight: '700',
             // marginLeft: '20%'
           },
           vs:{
@@ -121,32 +119,74 @@ const AgreeContainer =()=>{
           }
     });
     
+    // 필요한 함수 
+    // 1. 어제와 비교했을 때 1일 지났는지 
+    // 2. True -> text 필드 값 변경 (데이터 가져와야 함)
+    // 3. 변경 되었는지 확인 
+    // 4. 변경 True -> DB insert (모델의데이터를업데이트 : 컨트롤러에서)
     
-    // const [data, setData] = useState([
-    //   { id: '1', text1: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 1},
+    // 1. 7일이 지나면 (View)
+    // 2. state 값 변경 (모델의데이터를업데이트 : 컨트롤러)
+    // 3. 값 변경 True -> View (댓글창 false로) 
+     
+    
+    
 
-    // ]);
+    // 1. 1일이 지났는지 확인하기 위한 함수 
+    function days_between(date1, date2) {
+       // 하루의 밀리초 수
+        const ONE_DAY = 1000 * 60 * 60 * 24;
 
-    const [message, setMessage] = useState('');
+        // 밀리초로 차이 계산
+        const differenceMs = Math.abs(date1 - date2);
 
-  //   useEffect(() => {
-  //   // AgreeContainer 엔드포인트로 GET 요청 보내기
-  //   fetch('http://localhost:3001/AgreeContainer')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       // 서버에서 전송한 데이터를 처리
-  //       setMessage(data.message);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching data:', error);
-  //       setMessage('서버와의 통신 중 오류가 발생했습니다.');
-  //     });
-  // }, []);
-    const randomText = ({ item }) => (
-      <View style={styles.textBox}> 
-        <Text style={styles.text}>{item.text}</Text>
-      </View>
-    )
+        // 다시 일수로 변환하여 반환
+        return Math.round(differenceMs / ONE_DAY);
+      }
+    // 2. 계산에 사용될 날짜 
+        const dt = new Date();
+        dt.setHours(0, 0 ,0, 0); // 시간은 필요 없으니 제거 
+        const formatDate = (date) => date.toISOString().split('T')[0]; // 날짜를 문자열로 지정해 주는 함수 formatDate 
+        // 날짜 출력 형태: 2024-01-02
+        const today = formatDate(dt); // 오늘 날짜 
+        // console.log(today); // 확인하고 싶으면 주석 풀어서 보셔요 
+        const yesterday = formatDate(new Date(dt.setDate(dt.getDate() - 1)));
+
+        const date1 = new Date(yesterday);
+        const date2 = new Date(today);
+        // console.log(date1);
+        const daysDifference = days_between(date1, date2);
+        const result = daysDifference.toString();
+      
+    function oneDay(){
+      if(result == '1'){
+        // text 내용 바꿈 
+        // db에서 가져올 때 vs를 중심으로 문자열 나누면 되는 걸가
+        
+      
+      }
+    }
+      
+
+    // 테스트를 위한 임시 데이터 배열 -> model -> 현재 파일 로직 -> db 이뤄져야 함
+    let toronData = [
+      {id: 1, text: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 0},
+      {id: 2, text: '정대만이랑 연애 \n vs \n 이명헌이랑 연애', state: 0}
+  ];
+
+  const desiredId = 1;
+  const renderText = ({ item }) => {
+    // 특정 아이디에 해당하는 데이터만 출력하도록 
+    if (item.id === desiredId) {
+      return (
+        <View style={styles.textBox}>
+          <Text style={styles.text}>{item.text}</Text>
+        </View>
+      );
+    }
+    // 아이디가 일치하지 않으면 null 반환하여 아무 것도 출력하지 않음
+    return null;
+  };
 
     return(
         <View style={[styles.container,{flexDirection: 'row',}]}>
@@ -162,9 +202,9 @@ const AgreeContainer =()=>{
             {/* <ScrollView style={styles.textBox}> */}
             {/* // 서버로 전송 받은 채팅 데이터 화면에 출력 */}
             <FlatList
-            // data={message}
-             renderItem={randomText}
-             keyExtractor={(item) => item.id}
+            data={toronData}
+             renderItem={renderText}
+             keyExtractor={(item) => item.id.toString()}
             >
             </FlatList>
             
