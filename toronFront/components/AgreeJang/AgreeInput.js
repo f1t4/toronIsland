@@ -18,7 +18,7 @@ try {
         console.error('댓글 내용이 비어있습니다.');
         return;
     }
-      const serverUrl = 'http://192.168.35.243:3000/comments';
+      const serverUrl = 'http://localhost:3000/comments';
   
       const commentData = {
         username: '사용자명',
