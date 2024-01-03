@@ -44,7 +44,7 @@ const  AgreeMain =({navigation})=> {
 
     const handleCommentAdded = async (newComment) => {
         try {
-            const serverUrl = 'http://localhost:3000/comments'; //놑북IPv4 주소를 넣어야 오류가 안 생기더라구요...? 원래 이런건가
+            const serverUrl = 'http://10.0.2.2:3000/comments';
 
             const commentData = {
                 username: '사용자명', // 사용자명을 실제 사용자명으로 변경
