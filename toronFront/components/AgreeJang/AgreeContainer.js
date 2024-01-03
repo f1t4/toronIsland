@@ -158,15 +158,17 @@ const AgreeContainer =()=>{
         const daysDifference = days_between(date1, date2);
         const result = daysDifference.toString();
       
-    function oneDay(){
-      if(result == '1'){
-        // text 내용 바꿈 
-        // db에서 가져올 때 vs를 중심으로 문자열 나누면 되는 걸가
-        
+    // function oneDay(){
+    //   if(result == '1'){
+    //     // text 내용 바꿈 
+    //     // db에서 가져올 때 vs를 중심으로 문자열 나누면 되는 걸가
+    //     setInterval(days_between, 300000)
       
-      }
-    }
-      
+    //   }
+    // }
+    
+    
+    
 
     // 테스트를 위한 임시 데이터 배열 -> model -> 현재 파일 로직 -> db 이뤄져야 함
     let toronData = [
