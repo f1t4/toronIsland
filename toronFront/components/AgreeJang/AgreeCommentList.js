@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import AgreeComment from './AgreeComment';
 
-const AgreeCommentList = () => {
+const AgreeCommentList = ({ onCommentAdded }) => {
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
         // 서버에서 댓글 목록을 가져와서 setComments로 업데이트
         const fetchComments = async () => {
           try {
-            const response = await fetch('http://localhost:3000/comments'); // //놑북IPv4 주소를 넣어야 오류가 안 생기더라구요...? 원래 이런건가
+            const response = await fetch('http://10.0.2.2:3000/comments'); // //놑북IPv4 주소를 넣어야 오류가 안 생기더라구요...? 원래 이런건가
             const data = await response.json();
             setComments(data);
           } catch (error) {
@@ -19,7 +19,7 @@ const AgreeCommentList = () => {
     
         // 컴포넌트가 마운트될 때와 comments가 변경될 때마다 실행
         fetchComments();
-      }, [comments]);
+      }, [onCommentAdded]);
     return (
         <View style={styles.test}>
             <ScrollView>
