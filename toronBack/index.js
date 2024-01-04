@@ -6,9 +6,6 @@ const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 
-// const Board = require('./models/post');
-
-
 const app = express();
 // const port = process.env.PORT || 3000;
 const port = 3000;
@@ -72,34 +69,33 @@ app.get('/getTopics', (req, res) => {
 
   //  comments.push(newComment);
 
-  //  res.json(newComment);
+app.get('/comments', (req, res) => {
+  res.json(comments);
+});
 
-//지현
+app.post('/comments', (req, res) => {
+  const { username, content } = req.body;
+
+  if (!username || !content) {
+    return res.status(400).json({ error: 'Username and content are required' });
+  }
+  const newComment = {
+    id: comments.length + 1,
+    username,
+    content,
+    createdAt: new Date(),
+  };
+
+  comments.push(newComment);
+
+  res.json(newComment);
+});
+
+// //지현
 // const commentController = require('./controllers/commentController');
 // app.use('/api', commentController);
 
 // 하경
-// const query = 'SELECT * FROM board';
-// connection.query(query, (err, result, fields)=> {
-//     if(err) {
-//         console.log('Error excuting query => ', error);
-//         return;
-//     }
-
-//     console.log(result);
-
-//     Board.findAll()
-//     .then(boards => {
-//       console.log("result: ", boards);
-//     })
-//     .catch(error=>{
-//       console.log("error~~",error);
-//     })
-//     .finally(()=>{
-//       // DB 연결 종료 
-//       db.connect(connection);
-//     });
-// });
 
 app.listen(port, () => {
   if (err) {

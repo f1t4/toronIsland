@@ -22,7 +22,7 @@
     "expo-status-bar": "~1.6.0",
     "jest-worker": "^29.7.0",
     "lib": "^5.1.0",
-    "metro": "^0.80.2",
+    "metro": "^0.80.3",
     "metro-config": "^0.80.1",
     "metro-transform-worker": "^0.80.1",
     "react": "18.2.0",
