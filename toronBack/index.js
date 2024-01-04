@@ -10,7 +10,7 @@ const app = express();
 // const port = process.env.PORT || 3000;
 const port = 3000;
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(cors());
 
 const comments = [];
@@ -20,25 +20,17 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-app.get('/login/auth/google', (req, res) => {
-  console.log(req);
-  res.redirect('/login/auth/google/callback');
-});
-
 //User google log-in logic start
+
+// app.get('/login/auth/google', (req, res) => {
+//   console.log(req);
+//   res.redirect('/login/auth/google/callback');
+// });
 // app.use(session({secret : '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', resave: true, saveUninitialized: true}));
 // app.use(passport.initialize());
 // app.use(passport.session());
-console.log('!');
 app.use('/login', userRoutes);
-app.use((err, req, res, next) => {
-  if(err){
-    console.error(err.stack);
-  }
-  else{
-    res.send('No Error');
-  }
-})
+
 //User google log-in logic fin
 
 
