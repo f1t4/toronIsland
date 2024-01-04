@@ -7,20 +7,21 @@ import Alert from './alert';
 import { useNavigation } from '@react-navigation/native';
 
 export default function StartIndex(){
-    const [fontLoad, setFontLoad] = useState(false);
-    useEffect(()=>{
-        async function loadFont(){
-            await Font.loadAsync({
-                interReg : require('../assets/fonts/Inter-Regular.ttf'),
-                interSem : require('../assets/fonts/Inter-SemiBold.ttf')
-            });
-        }
-        loadFont()
-            .then(() => setFontLoad(true));
-    }, []);
-    if(!fontLoad){
-        return null;
-    }
+    //글꼴 불러오는 코드, 불러와지지 않음
+    // const [fontLoad, setFontLoad] = useState(false);
+    // useEffect(()=>{
+    //     async function loadFont(){
+    //         await Font.loadAsync({
+    //             interReg : require('../assets/fonts/Inter-Regular.ttf'),
+    //             interSem : require('../assets/fonts/Inter-SemiBold.ttf')
+    //         });
+    //     }
+    //     loadFont()
+    //         .then(() => setFontLoad(true));
+    // }, []);
+    // if(!fontLoad){
+    //     return null;
+    // }
 
     // const serverUrl = 'http://localhost:3000';
     // const googleLogInProcess = async()=>{
@@ -37,12 +38,10 @@ export default function StartIndex(){
     //해결하기,, ~ _감
 
     const navigation = useNavigation();
-    const openLoginPage = ()=>{
-        navigation.navigate('Web');
-    }
 
     return(
         <View style={styles.body}>
+
             <View style={styles.header}>
                 <Text style={styles.subTitle}>토론섬간단</Text>
                 <Text style={styles.subTitle}>소개문구정도...</Text>
@@ -65,7 +64,7 @@ export default function StartIndex(){
                             style={styles.img}></Image>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signupBtn} onPress={openLoginPage}>
+                    <TouchableOpacity style={styles.signupBtn} onPress={() => navigation.navigate('Web')}>
                         <View style={styles.btn}>
                             <Image 
                             source={require('../assets/google.png')}
@@ -90,14 +89,14 @@ const styles = StyleSheet.create({
         justifyContent : 'center'
     },
     subTitle : {
-        fontFamily : 'interReg',
+        // fontFamily : 'interReg',
         fontSize : 30,
         marginLeft : 30,
         color : '#000',
         textAlign : 'left'
     },
     mainTitle : {
-        fontFamily : 'interSem',
+        // fontFamily : 'interSem',
         fontSize : 50,
         marginLeft : 30,
         fontWeight : 'bold',
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
         justifyContent : 'center'
     },
     signupText : {
-        fontFamily : 'interReg',
+        // fontFamily : 'interReg',
         fontSize : 13,
         color : '#b3b3b3',
         textAlign : 'center',
