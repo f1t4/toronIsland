@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const pool = require('../config/db'); // 경로를 적절히 수정
+const pool = require('../config/db'); 
 const router = express.Router();
 
 router.get('/comments', async (req, res) => {

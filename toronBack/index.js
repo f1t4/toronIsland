@@ -57,51 +57,19 @@ app.post('/comments', (req, res) => {
   if (!username || !content) {
     return res.status(400).json({ error: 'Username and content are required' });
   }
+  const newComment = {
+    id: comments.length + 1,
+    username,
+    content,
+    createdAt: new Date(),
+  };
 
-//지현
-//    //데베에 댓글을 저장하는 코드 추가
-//    const sql = 'INSERT INTO user_activity (board_id, comment_content) VALUES (?, ?)';
-//    const values = [1, content]; // 임시로 board_id를 1로 설정, 실제로는 게시물 ID를 사용해야 함
- 
-//    db.query(sql, values, (err, result) => {
-//      if (err) {
-//        console.error('Error executing query:', err);
-//        res.status(500).send('Internal Server Error');
-//      } else {
-//        // 저장된 데이터베이스에서 마지막으로 추가된 댓글을 가져오는 코드
-//        const lastInsertIdQuery = 'SELECT LAST_INSERT_ID() as comment_id';
-//        db.query(lastInsertIdQuery, (lastInsertIdErr, lastInsertIdResult) => {
-//          if (lastInsertIdErr) {
-//            console.error('Error getting last insert ID:', lastInsertIdErr);
-//            res.status(500).send('Internal Server Error');
-//          } else {
-//            const newComment = {
-//              id: lastInsertIdResult[0].comment_id,
-//              username,
-//              content,
-//              createdAt: new Date(),
-//            };
-//            comments.push(newComment);
-//            res.json(newComment);
-//          }
-//        });
-//      }
-//    });
-//  });
+  comments.push(newComment);
 
-   const newComment = {
-     id: comments.length + 1,
-     username,
-     content,
-     createdAt: new Date(),
-   };
+  res.json(newComment);
+});
 
-   comments.push(newComment);
-
-   res.json(newComment);
- });
-
-//지현
+// //지현
 // const commentController = require('./controllers/commentController');
 // app.use('/api', commentController);
 
