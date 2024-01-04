@@ -109,4 +109,14 @@ app.post('/comments', (req, res) => {
 // });
 
 // 하경
+app.get('/board_data', async(req, res, next)=>{
+  try{
+      const [postData] = await connection.query('select * from board;');
+      res.json(postData);
+      console.log(postData);
+  }catch(error){
+      console.log('Error!!!!!!', error);
+      res.status(500).json({error: 'Error~~~!!'})
+  }
+});
 
