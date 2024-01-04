@@ -6,21 +6,21 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
 
-passport.use(new GoogleStrategy({
+passport.use('google', new GoogleStrategy({
     clientID : '1082978828191-bhh1rrdv4preg21gtsvkhbtn2pafahnt.apps.googleusercontent.com',
     clientSecret : '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',
-    callbackURL : 'http://localhost:3000/login/auth/google'
-}, (accessToken, refreshToken, profile, done) => {
-    const data = {
-        id : profile.id,
-        email : profile.email[0].value,
-        provider : profile.provider
-    }
-    User.save(data, (err, result) =>{
-        if(err) throw err;
-        console.log('[RESULT] ' + result);
-    });
-    return done(null, profile);
+    callbackURL : 'http://localhost:3000/login/auth/google/callback'
+  }, (accessToken, refreshToken, profile, done) => {
+      const data = {
+          id : profile.id,
+          email : profile.email[0].value,
+          provider : profile.provider
+      }
+      User.save(data, (err, result) =>{
+          if(err) throw err;
+          console.log('[RESULT] ' + result);
+      });
+      return done(null, profile);
 }));
 
 passport.serializeUser((user, done) => {
@@ -41,7 +41,7 @@ const isAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/login');
+    res.redirect('/');
   };
   
 module.exports = isAuthenticated;

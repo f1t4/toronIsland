@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 import Alert from './alert';
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function StartIndex(){
     const [fontLoad, setFontLoad] = useState(false);
@@ -14,25 +14,32 @@ export default function StartIndex(){
                 interReg : require('../assets/fonts/Inter-Regular.ttf'),
                 interSem : require('../assets/fonts/Inter-SemiBold.ttf')
             });
-            setFontLoad(true);
         }
-        loadFont();
+        loadFont()
+            .then(() => setFontLoad(true));
     }, []);
     if(!fontLoad){
         return null;
     }
 
     // const serverUrl = 'http://localhost:3000';
-    const googleLogInProcess = async()=>{
-        try{
-            const googleAuthResponse = await axios.get('http://localhost:3000/login/auth/google');
-            console.log('구글 리다이렉션');
-        } catch (error) {
-        console.error('Error, Google login:', error);
-        }
-    }
+    // const googleLogInProcess = async()=>{
+    //     try{
+    //         const googleAuthResponse = await axios.get('http://192.168.100.39:3000/login/auth/google');
+    //         console.log('구글 리다이렉션');
+    //     } catch (error) {
+    //     console.error('Error, Google login:', error);
+    //     }
+    // }
     //404발생, 28dec
+    //해당 URL에서 get 요청 -> 로그인하지도 X -> res X 그래서 404 발생하는 듯
+    //화면을 띄워야 함 ~> WebView
     //해결하기,, ~ _감
+
+    const navigation = useNavigation();
+    const openLoginPage = ()=>{
+        navigation.navigate('Web');
+    }
 
     return(
         <View style={styles.body}>
@@ -58,7 +65,7 @@ export default function StartIndex(){
                             style={styles.img}></Image>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signupBtn} onPress={googleLogInProcess}>
+                    <TouchableOpacity style={styles.signupBtn} onPress={openLoginPage}>
                         <View style={styles.btn}>
                             <Image 
                             source={require('../assets/google.png')}

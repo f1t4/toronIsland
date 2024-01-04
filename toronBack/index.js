@@ -6,28 +6,45 @@ const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 
-const Board = require('./models/post')
+// const Board = require('./models/post');
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
 
 const comments = [];
 
+app.get('/', (req, res) => {
+  console.log('200');
+  res.send('Hello World!')
+});
+
+app.get('/login/auth/google', (req, res) => {
+  console.log(req);
+  res.redirect('/login/auth/google/callback');
+});
+
 //User google log-in logic start
-app.use(session({secret : '*', resave: true, saveUninitialized: true}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({secret : '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', resave: true, saveUninitialized: true}));
+// app.use(passport.initialize());
+// app.use(passport.session());
 console.log('!');
-app.use('/', userRoutes);
+app.use('/login', userRoutes);
+app.use((err, req, res, next) => {
+  if(err){
+    console.error(err.stack);
+  }
+  else{
+    res.send('No Error');
+  }
+})
 //User google log-in logic fin
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
+
 
 //[채원] PretoronScreen
 // const db = require('./db'); 
@@ -45,69 +62,21 @@ app.get('/getTopics', (req, res) => {
   });
 });
 
+//이 밑에 코드 res 객체가 어디서 나온 객체인지 모르겠어서 주석 쳐뒀습니다 _감
+  //  const newComment = {
+  //    id: comments.length + 1,
+  //    username,
+  //    content,
+  //    createdAt: new Date(),
+  //  };
 
+  //  comments.push(newComment);
 
-app.get('/comments', (req, res) => {
-  res.json(comments);
-});
-
-app.post('/comments', (req, res) => {
-  const { username, content } = req.body;
-
-  if (!username || !content) {
-    return res.status(400).json({ error: 'Username and content are required' });
-  }
-
-//지현
-//    //데베에 댓글을 저장하는 코드 추가
-//    const sql = 'INSERT INTO user_activity (board_id, comment_content) VALUES (?, ?)';
-//    const values = [1, content]; // 임시로 board_id를 1로 설정, 실제로는 게시물 ID를 사용해야 함
- 
-//    db.query(sql, values, (err, result) => {
-//      if (err) {
-//        console.error('Error executing query:', err);
-//        res.status(500).send('Internal Server Error');
-//      } else {
-//        // 저장된 데이터베이스에서 마지막으로 추가된 댓글을 가져오는 코드
-//        const lastInsertIdQuery = 'SELECT LAST_INSERT_ID() as comment_id';
-//        db.query(lastInsertIdQuery, (lastInsertIdErr, lastInsertIdResult) => {
-//          if (lastInsertIdErr) {
-//            console.error('Error getting last insert ID:', lastInsertIdErr);
-//            res.status(500).send('Internal Server Error');
-//          } else {
-//            const newComment = {
-//              id: lastInsertIdResult[0].comment_id,
-//              username,
-//              content,
-//              createdAt: new Date(),
-//            };
-//            comments.push(newComment);
-//            res.json(newComment);
-//          }
-//        });
-//      }
-//    });
-//  });
-
-   const newComment = {
-     id: comments.length + 1,
-     username,
-     content,
-     createdAt: new Date(),
-   };
-
-   comments.push(newComment);
-
-   res.json(newComment);
- });
+  //  res.json(newComment);
 
 //지현
 // const commentController = require('./controllers/commentController');
 // app.use('/api', commentController);
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
 
 // 하경
 // const query = 'SELECT * FROM board';
@@ -132,3 +101,10 @@ app.post('/comments', (req, res) => {
 //     });
 // });
 
+app.listen(port, () => {
+  if (err) {
+    console.error(`Error starting server: ${err}`);
+  } else {
+    console.log(`Server is running on port ${port}`);
+  }
+});
