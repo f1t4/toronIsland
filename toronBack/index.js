@@ -88,6 +88,16 @@ app.post('/comments', (req, res) => {
 // app.use('/api', commentController);
 
 // 하경
+app.get('/board_data', async(req, res, next)=>{
+  try{
+      const [postData] = await connection.query('select * from board;');
+      res.json(postData);
+      console.log(postData);
+  }catch(error){
+      console.log('Error!!!!!!', error);
+      res.status(500).json({error: 'Error~~~!!'})
+  }
+});
 
 app.listen(port, () => {
   if (err) {

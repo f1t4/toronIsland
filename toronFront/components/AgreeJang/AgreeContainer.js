@@ -171,12 +171,12 @@ const AgreeContainer =()=>{
     useEffect(()=>{
       const fetchPosts = async ()=>{
         try{
-          const response = await fetch('http://10.0.2.2:3000/board_data');
+          const response = await fetch('http://192.168.219.159:8081/board_data');
           const data = await response.json();
           setPosts(data);
           console.log(data);
         }catch(error){
-          // console.log('게시물 가져오기 에러', error);
+          console.log('게시물 가져오기 에러', error);
           
         }
       };
