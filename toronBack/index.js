@@ -6,7 +6,6 @@ const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 
-const Board = require('./models/post')
 
 
 const app = express();
@@ -78,25 +77,4 @@ app.post('/comments', (req, res) => {
 // });
 
 // 하경
-// const query = 'SELECT * FROM board';
-// connection.query(query, (err, result, fields)=> {
-//     if(err) {
-//         console.log('Error excuting query => ', error);
-//         return;
-//     }
-
-//     console.log(result);
-
-//     Board.findAll()
-//     .then(boards => {
-//       console.log("result: ", boards);
-//     })
-//     .catch(error=>{
-//       console.log("error~~",error);
-//     })
-//     .finally(()=>{
-//       // DB 연결 종료 
-//       db.connect(connection);
-//     });
-// });
 

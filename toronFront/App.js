@@ -32,16 +32,16 @@ export default function App() {
     * 서버에서 데이터 가져올 일 있으면 3000 뒤에 /path 붙여서 필요한 url에 쓰셔용
     * 지금은 일단 주석처리 해두겠습니다 _감
     */
-  useEffect(() => {
-    // 서버로부터 데이터를 가져오는 예시
-    axios.get('http://localhost:3000')
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   // 서버로부터 데이터를 가져오는 예시
+  //   axios.get('http://localhost:3000')
+  //     .then(response => {
+  //       setData(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // }, []);
 
 
   return (
