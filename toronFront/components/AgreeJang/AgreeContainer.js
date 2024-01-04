@@ -118,7 +118,7 @@ const AgreeContainer =()=>{
             marginBottom: 30
           }
     });
-    
+
     // 필요한 함수 
     // 1. 어제와 비교했을 때 1일 지났는지 
     // 2. True -> text 필드 값 변경 (데이터 가져와야 함)
@@ -166,7 +166,29 @@ const AgreeContainer =()=>{
       
     //   }
     // }
-    
+    const[posts, setPosts] = useState([]);
+
+    useEffect(()=>{
+      const fetchPosts = async ()=>{
+        try{
+          const response = await fetch('http://10.0.2.2:3000/board_data');
+          const data = await response.json();
+          setPosts(data);
+          console.log(data);
+        }catch(error){
+          // console.log('게시물 가져오기 에러', error);
+          
+        }
+      };
+      fetchPosts();
+      // const intervalId = setInterval(()=>{
+      //   fetchPosts();
+      // }, 7 * 24 * 60 * 60 * 1000);
+      
+    return () => {
+      // clearInterval(intervalId);
+    };
+    }, []);
     
     
 
