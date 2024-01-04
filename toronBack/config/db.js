@@ -11,7 +11,7 @@ const db_toron = {
 =======
     port: "",
     user: "",
-    password: "!",
+    password: "",
     database: ""
 >>>>>>> 5de3d49bd0a77dd2f5ee2be3c83e82c6d773a11a
 }
