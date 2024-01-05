@@ -5,8 +5,13 @@ const passport = require('passport');
 const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
+const connection = db.init();
+db.connect(connection);
 
 const app = express();
+
+app.use(express.json());
+app.use(cors());
 // const port = process.env.PORT || 3000;
 const port = 3000;
 
@@ -88,18 +93,20 @@ app.post('/comments', (req, res) => {
 // app.use('/api', commentController);
 
 // 하경
+// postContorller.js에서 요청 받고 응답하는 로직
+// 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답 
 app.get('/board_data', async(req, res, next)=>{
   try{
-      const [postData] = await connection.query('select * from board;');
+      const [postData] = await connection.query(`select * from board;`);
       res.json(postData);
       console.log(postData);
   }catch(error){
       console.log('Error!!!!!!', error);
-      res.status(500).json({error: 'Error~~~!!'})
+      res.status(500).json({error: 'Error~~~!!', details: error.message})
   }
 });
 
-app.listen(port, () => {
+app.listen(port, (err) => {
   if (err) {
     console.error(`Error starting server: ${err}`);
   } else {
