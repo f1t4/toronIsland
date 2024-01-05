@@ -166,18 +166,22 @@ const AgreeContainer =()=>{
       
     //   }
     // }
+
+    
+
     const[posts, setPosts] = useState([]);
 
     useEffect(()=>{
       const fetchPosts = async ()=>{
         try{
           const response = await fetch('http://192.168.219.159:8081/board_data');
+          
           const data = await response.json();
           setPosts(data);
           console.log(data);
         }catch(error){
-          console.log('게시물 가져오기 에러', error);
-          
+          console.log('게시물 가져오기 에러', error.message);
+          // console.log('씌팔');
         }
       };
       fetchPosts();
@@ -211,6 +215,8 @@ const AgreeContainer =()=>{
     // 아이디가 일치하지 않으면 null 반환하여 아무 것도 출력하지 않음
     return null;
   };
+
+  
 
     return(
         <View style={[styles.container,{flexDirection: 'row',}]}>

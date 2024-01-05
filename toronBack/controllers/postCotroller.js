@@ -3,14 +3,18 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const express = require('express');
 const app = express();
+const http = require('http');
 
 const port = 3000;
 
-const db = require('../config/db');
-const connection = db.init();
-db.connect(connection);
+// const db = require('../config/db');
+// const connection = db.init();
+// db.connect(connection);
+
 app.use(express.json());
 app.use(cors());
+
+
 
 // app.get('/', function(req, res, next){
 //     res.send('hello');
@@ -34,4 +38,4 @@ app.use(cors());
 
 app.listen(port, (err)=>{
     console.log(`server running at ${port} port`);
-})
+});
