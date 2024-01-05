@@ -5,6 +5,7 @@ import { View, TouchableOpacity, Text, TextInput, ScrollView, Image } from 'reac
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import MyScrollView from '../components/Homepage/MyScrollView';
+import SearchBar from '../components/Search.js';
 
 const HomeScreen = ({ navigation }) => {
   // ScrollView의 참조 및 너비 상태 관리를 위한 상태 변수들
@@ -36,20 +37,8 @@ const HomeScreen = ({ navigation }) => {
       <View style={{ flex: 1, padding: 20, backgroundColor: 'white'}}>
         <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 20 }}>토론섬</Text>
         {/* 검색 입력란 */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-          <TextInput
-            style={{
-              backgroundColor: '#EDEDED',
-              paddingLeft: 45, // 아이콘이 들어갈 공간 확보
-              paddingBottom: 8,
-              paddingTop: 8,
-              flex: 1,
-              borderRadius: 50,
-            }}
-            placeholder="Search..."
-          />
-          <Ionicons name="search" size={20} style={{ position: 'absolute', left: 15, zIndex: 1, color:'gray' }} />
-        </View>
+
+        <SearchBar/>
       
       <MyScrollView style={{ backgroundColor: 'white' }} showsVerticalScrollIndicator={false}>
         {/* today */}

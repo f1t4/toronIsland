@@ -14,6 +14,7 @@ import AlertScreen from './screens/alert';
 import StartScreen from './screens/startIndex';
 import MypageScreen from './screens/mypage';
 import LoginWeb from './components/Start/loginWeb';
+import PretoronScreen from './screens/PretoronScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator(); 
@@ -76,8 +77,10 @@ export default function App() {
   // </NavigationContainer>
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={StartScreen} />
-        <Stack.Screen name="Web" component={LoginWeb} />
+        {/* <Stack.Screen name="Home" component={StartScreen} />
+        <Stack.Screen name="Web" component={LoginWeb} /> */}
+        <Stack.Screen name="home" component={HomeScreen} />
+        <Stack.Screen name="Pretoron" component={PretoronScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

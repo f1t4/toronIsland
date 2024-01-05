@@ -3,30 +3,32 @@ import { StyleSheet, SafeAreaView, ScrollView, Animated, Platform } from 'react-
 import Header from '../components/Pretoron/PretoronHeader.js';
 import ToronCard from '../components/Pretoron/PretoronCard.js';
 import { LinearGradient } from "expo-linear-gradient";
-import axios from 'axios';
+import ReadTopics from '../data/readTopics.js';
+import SearchBar from '../components/Search.js';
+import { useRoute } from '@react-navigation/native';
 
 //주제 넣어주는 함수
-const fetchTopics = async () => {
-  try {
-    const response = await axios.get('http://localhost:3001/getTopics');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching topics:', error);
-    return [];
-  }
-};
 
 const PretoronScreen = () => {
   const [topics, setTopics] = useState([]);
+  const route = useRoute();
+  console.log('Route Params:', route.params);
+  
+  const searchQuery = route.params?.searchQuery || ''; 
+  //searchquery변수에 현재 화면으로 전달된 매개변수 가져온다, route.parms객체가 존재하면 해당 매개변수를 가져오고, 존재하지 않으면 빈 문자열 할당
 
   useEffect(() => {
-    // 페이지 로드 시 주제 데이터 가져오기
-    fetchTopicsData();
-  }, []);
+    // 페이지 로드시, 검색 쿼리를 기반으로 주제 데이터 가져오기
+    fetchTopicsData(searchQuery);
+  }, [searchQuery]);
 
-  const fetchTopicsData = async () => {
-    const topicData = await fetchTopics();
-    setTopics(topicData);
+  const fetchTopicsData = async (query) => {
+    // 검색 쿼리를 기반으로 데이터 가져오기
+    // 이 부분을 수정하여 백엔드 또는 저장소에서 데이터를 가져올 수 있습니다.
+    const topicData = ReadTopics(); // ReadTopics가 주제의 배열을 반환한다고 가정합니다.
+    // 검색 쿼리를 기반으로 주제 필터링
+    const filteredTopics = topicData.filter((item) => item.board_content.includes(query));
+    setTopics(filteredTopics);
   };
 
   const scrollY = new Animated.Value(0);
@@ -79,11 +81,12 @@ const PretoronScreen = () => {
               styles.header,
               { transform: [{ translateY: headerTranslateY }], opacity: headerOpacity },
             ]}
-          >
+            >
+            <SearchBar/>
             <Header
               headerText={"이전 토론 👑"}
               style={{ fontSize: headerTextSize }}
-            />
+              />
           </Animated.View>
         </Animated.View>
         <ScrollView
@@ -92,13 +95,11 @@ const PretoronScreen = () => {
           })}
           scrollEventThrottle={16}
         >
-          {topics.map((item) => (
+          {topics.map((item, index) => (
             <ToronCard
-              key={item.board_id}
-              date={item.board_create}
-              title={item.board_content}
-              participants={item.participants}
-            />
+            key={index} // 임의로 index를 key로 사용
+            title={item.board_content} // 주제 데이터에서 board_content를 가져와서 title로 사용
+          />
           ))}
         </ScrollView>
       </SafeAreaView>
@@ -118,12 +119,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     overflow: 'hidden',
     marginHorizontal: 20,
+    marginBottom : 20,
+    marginTop:10
+    // backgroundColor:'tomato'
   },
   header: {
     paddingTop: Platform.OS === 'ios' ? 5 : 10,
-    height: '100%',
+    flex:1,
     justifyContent: 'center',
   },
+
 });
 
 export default PretoronScreen;
