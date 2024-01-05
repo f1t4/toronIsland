@@ -8,9 +8,9 @@ const db = require('./config/db');
 
 const app = express();
 // const port = process.env.PORT || 3000;
-const port = 3000;
+const port = 3001;
 
-// app.use(bodyParser.json());
+// app.use(bodyPdcdarser.json());
 app.use(cors());
 
 const comments = [];
@@ -36,7 +36,6 @@ app.use('/login', userRoutes);
 
 
 //[채원] PretoronScreen
-// const db = require('./db'); 
 
 // GET route to fetch topics
 app.get('/getTopics', (req, res) => {
@@ -50,6 +49,27 @@ app.get('/getTopics', (req, res) => {
     }
   });
 });
+
+//[채원] searchBar 
+// 데이터베이스에서 검색 수행하는 함수
+// const performSearch = async (query) => {
+//   return new Promise((resolve, reject) => {
+//     // 예시: 주제 제목에서 키워드를 검색
+//     const sql = 'SELECT * FROM board WHERE board_content LIKE ?';
+//     const keyword = `%${query}%`;
+
+//     db.connect.query(sql, [keyword], (err, result) => {
+//       if (err) {
+//         console.error('Error executing search query:', err);
+//         reject('검색 중 오류 발생');
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };
+
+
 
 //이 밑에 코드 res 객체가 어디서 나온 객체인지 모르겠어서 주석 쳐뒀습니다 _감
   //  const newComment = {

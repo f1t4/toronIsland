@@ -13,8 +13,9 @@ export default Header;
 
 const styles = StyleSheet.create({
     container : { 
-        marginTop : 30,
-        marginBottom : 10,
+        // marginTop : 30,
+        // marginBottom : 10,
+        
     }, 
     headerText : {
         fontSize : 28,
