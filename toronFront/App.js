@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-<<<<<<< HEAD
+
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} 
                     options={{
@@ -82,14 +82,14 @@ export default function App() {
     //     <Stack.Screen name="Web" component={LoginWeb} />
     //   </Stack.Navigator>
     // </NavigationContainer>
-=======
-      <Stack.Navigator>
-        {/* <Stack.Screen name="Home" component={StartScreen} />
-        <Stack.Screen name="Web" component={LoginWeb} /> */}
-        <Stack.Screen name="home" component={HomeScreen} />
-        <Stack.Screen name="Pretoron" component={PretoronScreen}/>
-      </Stack.Navigator>
-    </NavigationContainer>
->>>>>>> fa7f35577080ca78cdc6628df48dfff47ea5d756
+
+    //   <Stack.Navigator>
+    //     {/* <Stack.Screen name="Home" component={StartScreen} />
+    //     <Stack.Screen name="Web" component={LoginWeb} /> */}
+    //     <Stack.Screen name="home" component={HomeScreen} />
+    //     <Stack.Screen name="Pretoron" component={PretoronScreen}/>
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+
   );
 };
