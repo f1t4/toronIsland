@@ -4,6 +4,15 @@ import { View, Text, StyleSheet } from 'react-native';
 const ToronCard = ({ date, title, participants }) => {
   const [participantsWidth, setParticipantsWidth] = useState(0);
 
+  //글자 길이 제한 
+  const turnText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.substring(0, maxLength - 3) + '...';
+  }
+
+
   useEffect(() => {
     if (participants) {
 
@@ -17,11 +26,11 @@ const ToronCard = ({ date, title, participants }) => {
   return (
     <View style={styles.cardContainer}>
 
-      <View style={styles.titleContainer}>
+      <View style={styles.dateContainer}>
         <Text style={styles.date}>{date}</Text>
       </View> 
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title} >{turnText(title, 22)}</Text>
       </View>
 
       <View style={styles.participantsContainer}>
@@ -29,14 +38,18 @@ const ToronCard = ({ date, title, participants }) => {
           style={{
             alignItems: 'center',
             width: participantsWidth,
-            marginTop: 8,
+            height : '40%',
+            // marginTop: 8,
             backgroundColor: '#EFEFEF',
             padding: 3,
             borderRadius: 20
           }}>
-          <Text style={styles.participantsText}>
-            {participants ? `${participants} 명 참여` : '참여자 없음'}
-          </Text>
+            <Text style={styles.participantsText}>
+              {participants !== undefined && participants !== 0
+                ? `${participants} 명 참여`
+                : '참여자 없음'}
+            </Text>
+
           </View>
       </View>
     </View>
@@ -45,10 +58,10 @@ const ToronCard = ({ date, title, participants }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
+    
     elevation: 10,
     backgroundColor: "rgba(255, 255, 255, 0.9)", //마지막은 투명도
-    padding: 25,
-    margin: 8,
+    
     elevation: 3,
     shadowOpacity: 2,
     shadowRadius: 30,
@@ -58,31 +71,45 @@ const styles = StyleSheet.create({
     },
     shadowColor: "rgba(0, 0, 0, 0.1)",
     borderRadius: 15,
-    marginBottom: 20, 
+    
+    flex : 1,
+    marginHorizontal : 20,
+    marginVertical : 14,
+  
     overflow: 'hidden',
+    
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   date: {
     fontSize: 15,
-    marginTop: 8,
+    // marginTop: 8,
     color: '#282828',
   },
   participantsText: {
+    width : '100%',
     fontSize: 12,
-    color: '#000000',
+    color: 'black',
+  },
+  dateContainer : {
+    backgroundColor : 'tomato',
+    height : '20%'
   },
   titleContainer: {
-    padding: 3,
-    alignItems: 'center', // 가로 중앙 정렬, 세로는 뭐더라?
+    height : '40%',
+    marginHorizontal : 10,
+    alignItems: 'center', 
+    justifyContent : 'center', 
+    overflow :'hidden'
+    // backgroundColor : 'skyblue'
   },
   participantsContainer: {
-    paddingLeft: 50,
-    paddingRight: 50,
+    justifyContent : 'center',
     alignItems: 'center',
-    marginBottom: 10 
+    // backgroundColor : 'tomato'
+
   }
 });
 
