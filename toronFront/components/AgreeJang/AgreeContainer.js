@@ -3,6 +3,14 @@ import { FlatList, StyleSheet, Text, View, StatusBar, Button, Image, TouchableOp
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
+const renderText = ({ item }) => {
+  <View style={styles.textBox}>
+      <Text style={styles.text}>{item.board_content}</Text>
+    </View>
+    
+};
+
+
 const AgreeContainer =()=>{
   const styles = StyleSheet.create({
         container: {
@@ -175,9 +183,9 @@ const AgreeContainer =()=>{
       const fetchPosts = async ()=>{
         try{
           const response = await fetch('http://192.168.219.159:8081/board_data');
-          
           const data = await response.json();
           setPosts(data);
+
           console.log(data);
         }catch(error){
           console.log('게시물 가져오기 에러', error.message);
@@ -194,27 +202,8 @@ const AgreeContainer =()=>{
     };
     }, []);
     
-    
 
-    // 테스트를 위한 임시 데이터 배열 -> model -> 현재 파일 로직 -> db 이뤄져야 함
-    let toronData = [
-      {id: 1, text: '송강호 떡 사주기 \n vs \n송강 떡 사주기', state: 0},
-      {id: 2, text: '정대만이랑 연애 \n vs \n 이명헌이랑 연애', state: 0}
-  ];
 
-  const desiredId = 1;
-  const renderText = ({ item }) => {
-    // 특정 아이디에 해당하는 데이터만 출력하도록 
-    if (item.id === desiredId) {
-      return (
-        <View style={styles.textBox}>
-          <Text style={styles.text}>{item.text}</Text>
-        </View>
-      );
-    }
-    // 아이디가 일치하지 않으면 null 반환하여 아무 것도 출력하지 않음
-    return null;
-  };
 
   
 
@@ -232,9 +221,9 @@ const AgreeContainer =()=>{
             {/* <ScrollView style={styles.textBox}> */}
             {/* // 서버로 전송 받은 채팅 데이터 화면에 출력 */}
             <FlatList
-            data={toronData}
+            data={posts}
              renderItem={renderText}
-             keyExtractor={(item) => item.id.toString()}
+             keyExtractor={(item) => item.board_id.toString()}
             >
             </FlatList>
             
