@@ -2,7 +2,7 @@
 
 const mysql = require("mysql2");
 const db_toron = {
-    host: "",
+    host: "localhost",
     port: "",
     user: "",
     password: "",
