@@ -14,6 +14,9 @@ import AgreeCommentList from "../components/AgreeJang/AgreeCommentList";
 // C2F4FC 그 다음 : 연하늘 
 
 const  AgreeMain =({navigation})=> {
+    const [dynamicBoardId, setDynamicBoardId] = useState('11');  // 예시 값, 실제 값으로 대체
+    const [dynamicUserId, setDynamicUserId] = useState(1);
+
 
     const styles = StyleSheet.create({
         main:{
@@ -86,16 +89,14 @@ const  AgreeMain =({navigation})=> {
             <View style={styles.agreeContainer}>
                 <AgreeContainer />
             </View>
-
-           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-            style={styles.agreeCommentInputContainer}>
-                {/* <AgreeCommentList  style={styles.agreeCommentList}/> */}
-                <AgreeCommentList />
-                <AgreeInput onCommentAdded={handleCommentAdded} style={styles.AgreeInputStyle} />
-
-            </KeyboardAvoidingView> 
-
-            <StatusBar style="auto" />
+            <View style={styles.agreeCommentInputContainer}>
+            <AgreeCommentList onCommentAdded={handleCommentAdded} />
+            <AgreeInput
+                onCommentAdded={handleCommentAdded}
+                dynamicBoardId={dynamicBoardId}
+                dynamicUserId={dynamicUserId}
+            />
+            </View>
 
         </View> 
     )
