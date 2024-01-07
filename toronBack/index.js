@@ -108,9 +108,9 @@ app.post('/comments', (req, res) => {
   res.json(newComment);
 });
 
-// //지현
-// const commentController = require('./controllers/commentController');
-// app.use('/api', commentController);
+//지현
+const commentController = require('./controllers/commentController');
+app.use('/comments', commentController);
 
 // 하경
 // postContorller.js에서 요청 받고 응답하는 로직

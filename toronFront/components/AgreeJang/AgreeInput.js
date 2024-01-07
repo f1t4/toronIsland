@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Pressable,Image, TouchableOpacity, View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, InputAccessoryView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const AgreeInput = ({ onCommentAdded }) => {
+const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
   const [text, setText] = useState('');
   const [statusBarHeight, setStatusBarHeight] = useState(0);
 
@@ -19,7 +19,8 @@ const AgreeInput = ({ onCommentAdded }) => {
       const commentData = {
         username: '사용자명',
         content: text,
-        boardId: 1,
+        boardId: dynamicBoardId,
+        userId: dynamicUserId,
       };
   
       const response = await fetch(serverUrl, {
@@ -39,7 +40,6 @@ const AgreeInput = ({ onCommentAdded }) => {
     } catch (error) {
       console.error('댓글 추가 에러:', error);
   
-      // 여기서 Alert.alert 사용
       Alert.alert('댓글 추가 실패', '댓글을 추가하는 중에 오류가 발생했습니다.');
     }
   };
