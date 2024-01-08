@@ -118,7 +118,7 @@ app.use('/comments', commentController);
 app.get('/board_data', async (req, res, next) => {
   try {
     const [postData] = await connection.promise().query('SELECT * FROM board');
-    console.log(postData); // 데이터 확인용 로그
+    // console.log(postData); // 데이터 확인용 로그
 
     res.json(postData);
   } catch (error) {
