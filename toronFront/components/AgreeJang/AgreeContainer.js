@@ -5,14 +5,27 @@ import axios from 'axios';
 
 
 const renderText = ({ item }) => {
-  return (
-    <View style={styles.textBox}>
-      <Text style={styles.text}>{item.board_content}</Text>
-    </View>
-  );
+ // 'vs'를 기준으로 문자열을 분리
+ const parts = item.board_content.split(',');
+
+ return (
+   <View style={styles.textBox}>
+     {/* 분리된 각 부분을 <Text>로 렌더링 */}
+     {parts.map((part, index) => (
+       <Text key={index} style={part === ' vs ' ? styles.vsText : styles.text}>
+         {part}
+       </Text>
+     ))}
+   </View>
+ );
 };
 
 const styles = StyleSheet.create({
+  vsText:{
+      fontSize: 12,
+      color: 'black',
+      fontWeight: '700',
+  },
   container: {
       // flex: 1,
       paddingLeft: 25,
