@@ -1,4 +1,4 @@
-
+//toronFront/components/AgreeJang/AgreeComments.js
 import React from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 

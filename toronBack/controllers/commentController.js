@@ -1,10 +1,23 @@
-// toronBack/controllers/commentController.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const db_toron = require('../config/db');
 const router = express.Router();
 
-router.get('/comments', async (req, res) => {
+// 댓글 목록 조회
+router.get('/comments', getComments);
+
+// 댓글 추가
+router.post('/comments', bodyParser.json(), addComment);
+
+// 사용자 목록 조회
+router.get('/users', getUsers);
+
+// 사용자 추가
+router.post('/users', bodyParser.json(), addUser);
+
+module.exports = router;
+
+async function getComments(req, res) {
   try {
     const [results] = await db_toron.query('SELECT * FROM user_activity');
     res.json(results);
@@ -12,9 +25,9 @@ router.get('/comments', async (req, res) => {
     console.error('Error getting comments:', error);
     res.status(500).json({ error: 'Error getting comments' });
   }
-});
+}
 
-router.post('/comments', bodyParser.json(), async (req, res) => {
+async function addComment(req, res) {
   try {
     const { username, content, boardId, userId } = req.body;
 
@@ -38,11 +51,11 @@ router.post('/comments', bodyParser.json(), async (req, res) => {
     res.json(newComment);
   } catch (error) {
     console.error('댓글 추가 오류:', error);
-    res.status(500).json({ error: '댓글 추가 오류' });
+    res.status(500).json({ error: '댓글 추가 오류', details: error.message });
   }
-});
+}
 
-router.get('/users', async (req, res) => {
+async function getUsers(req, res) {
   try {
     const [results] = await db_toron.query('SELECT * FROM user');
     res.json(results);
@@ -50,9 +63,9 @@ router.get('/users', async (req, res) => {
     console.error('Error getting users:', error);
     res.status(500).json({ error: 'Error getting users' });
   }
-});
+}
 
-router.post('/users', bodyParser.json(), async (req, res) => {
+async function addUser(req, res) {
   try {
     const { password, email, provider, provider_id, nickname } = req.body;
 
@@ -74,6 +87,4 @@ router.post('/users', bodyParser.json(), async (req, res) => {
     console.error('Error adding user:', error);
     res.status(500).json({ error: 'Error adding user' });
   }
-});
-
-module.exports = router;
+}
