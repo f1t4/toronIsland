@@ -128,6 +128,7 @@ app.get('/board_data', async (req, res, next) => {
 });
 
 
+
 app.listen(port, (err) => {
   if (err) {
     console.error(`Error starting server: ${err}`);
