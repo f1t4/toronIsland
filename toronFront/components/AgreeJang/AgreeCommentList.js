@@ -1,3 +1,4 @@
+//toronFront/components/AgreeJang/AgreeCommentList.js
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import AgreeComment from './AgreeComment';

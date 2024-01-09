@@ -1,4 +1,4 @@
-
+//toronFront/components/AgreeJang/AgreeInput.js
 import React, { useState, useRef, useEffect } from 'react';
 import { Pressable,Image, TouchableOpacity, View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, InputAccessoryView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
         username: '사용자명',
         content: text,
         boardId: dynamicBoardId,
-        userId: dynamicUserId,
+        userId: dynamicUserId
       };
   
       const response = await fetch(serverUrl, {
@@ -30,6 +30,15 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
         },
         body: JSON.stringify(commentData),
       });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          // 404 에러에 대한 처리
+        } else {
+          // 기타 에러에 대한 처리
+        }
+        throw new Error(`댓글 추가 실패 - ${response.status} ${response.statusText}`);
+      }
   
       const result = await response.json();
       console.log('댓글 추가 응답:', result);
@@ -39,8 +48,8 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
       setText('');
     } catch (error) {
       console.error('댓글 추가 에러:', error);
-  
-      Alert.alert('댓글 추가 실패', '댓글을 추가하는 중에 오류가 발생했습니다.');
+
+      console.log('서버 에러 메시지:', error.message);
     }
   };
 
