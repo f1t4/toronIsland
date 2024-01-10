@@ -18,5 +18,6 @@ module.exports = {
             if(err) console.error("Fail to connect the mySql : " + err);
             else console.log("mySql is connected successfully");
         });
-    }
+    },
+    db_toron
 }

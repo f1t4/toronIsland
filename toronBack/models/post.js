@@ -1,6 +1,5 @@
 // models/post.js
 const { DataTypes } = require('sequelize');
-const db = require('./config/db');
 const sequelize = db.init();
 db.connect(sequelize);
 
