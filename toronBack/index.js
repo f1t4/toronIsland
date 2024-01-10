@@ -12,8 +12,6 @@ db.connect(connection);
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-
 // const port = process.env.PORT || 3000;
 const port = 3000;
 
@@ -93,14 +91,14 @@ app.get('/comments', (req, res) => {
 });
 
 app.post('/comments', (req, res) => {
-  const { username, content } = req.body;
+  const { userId, content } = req.body;
 
-  if (!username || !content) {
+  if (!userId || !content) {
     return res.status(400).json({ error: 'Username and content are required' });
   }
   const newComment = {
     id: comments.length + 1,
-    username,
+    userId,
     content,
     createdAt: new Date(),
   };
