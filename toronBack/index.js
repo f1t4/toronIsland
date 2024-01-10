@@ -6,12 +6,14 @@ const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 const connection = db.init();
+
 db.connect(connection);
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
 // const port = process.env.PORT || 3000;
 const port = 3000;
 
@@ -127,6 +129,9 @@ app.get('/board_data', async (req, res, next) => {
   }
 });
 
+// 하경 
+// const cronjob = require('./controllers/postCotroller');
+// cronjob();
 
 
 app.listen(port, (err) => {
