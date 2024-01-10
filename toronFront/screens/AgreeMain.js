@@ -16,8 +16,16 @@ import AgreeCommentList from "../components/AgreeJang/AgreeCommentList";
 // C2F4FC 그 다음 : 연하늘 
 
 const  AgreeMain =({navigation})=> {
-    const [dynamicBoardId, setDynamicBoardId] = useState('11');  // 예시 값, 실제 값으로 대체
-    const [dynamicUserId, setDynamicUserId] = useState(1);
+    const [dynamicUserId, setDynamicUserId] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [boardId, setBoardId] = useState([1]);
+
+    // 로그인 후 사용자 정보를 받아와서 dynamicUserId 설정
+    const handleLogin = async (userInfo) => {
+        // 사용자 정보에서 userId 추출
+        const userId = userInfo.id; // 이 예시에서는 사용자 정보에 id가 있다고 가정합니다.
+        setDynamicUserId(userId);
+    };
 
 
     const styles = StyleSheet.create({
@@ -43,17 +51,16 @@ const  AgreeMain =({navigation})=> {
             headerShown: false,
           });
         }
-      }, [navigation]);
+    }, [navigation]);
 
-      const [comments, setComments] = useState([]);
 
     const handleCommentAdded = async (newComment) => {
         try {
             const serverUrl = 'http://10.0.2.2:3000/comments';
 
             const commentData = {
-                username: '사용자명', // 사용자명을 실제 사용자명으로 변경
                 content: newComment.content,
+                userId: dynamicUserId,
             };
 
             const response = await fetch(serverUrl, {
@@ -63,6 +70,15 @@ const  AgreeMain =({navigation})=> {
                 },
                 body: JSON.stringify(commentData),
             });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                  // 404 에러에 대한 처리
+                } else {
+                  // 기타 에러에 대한 처리
+                }
+                throw new Error(`댓글 추가 실패 - ${response.status} ${response.statusText}`);
+            }
 
             const result = await response.json();
             console.log('댓글 추가 응답:', result);
@@ -95,8 +111,8 @@ const  AgreeMain =({navigation})=> {
             <AgreeCommentList onCommentAdded={handleCommentAdded} />
             <AgreeInput
                 onCommentAdded={handleCommentAdded}
-                dynamicBoardId={dynamicBoardId}
                 dynamicUserId={dynamicUserId}
+                boardId={boardId}
             />
             </View>
 

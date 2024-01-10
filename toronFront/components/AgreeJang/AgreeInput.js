@@ -3,9 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Pressable,Image, TouchableOpacity, View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, InputAccessoryView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
+const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
   const [text, setText] = useState('');
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
 
   const handleCommentSubmit = async () => {
     try {
@@ -15,12 +14,11 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
       }
   
       const serverUrl = 'http://10.0.2.2:3000/comments';
-  
+
       const commentData = {
-        username: '사용자명',
         content: text,
-        boardId: dynamicBoardId,
-        userId: dynamicUserId
+        userId: dynamicUserId,
+        boardId: boardId,
       };
   
       const response = await fetch(serverUrl, {
@@ -30,7 +28,7 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
         },
         body: JSON.stringify(commentData),
       });
-
+  
       if (!response.ok) {
         if (response.status === 404) {
           // 404 에러에 대한 처리
@@ -48,8 +46,8 @@ const AgreeInput = ({ onCommentAdded, dynamicBoardId, dynamicUserId }) => {
       setText('');
     } catch (error) {
       console.error('댓글 추가 에러:', error);
-
       console.log('서버 에러 메시지:', error.message);
+      Alert.alert('댓글 추가 에러', '댓글을 추가하는 중에 오류가 발생했습니다.');
     }
   };
 
