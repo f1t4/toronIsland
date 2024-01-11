@@ -1,12 +1,20 @@
 //toronBack/controllers/commentController.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('../config/db');
+
 const router = express.Router();
+const db = require('../config/db');
+const connection = db.init();
+
+db.connect(connection);
+const app = express();
+
+const cors = require('cors');
+app.use(cors());
 
 
-// 댓글 목록 조회
-router.get('/comments', getComments);
+// // 댓글 목록 조회
+// router.get('/comments', getComments);
 
 // 댓글 추가
 router.post('/comments/:boardId', bodyParser.json(), addComment);
@@ -21,7 +29,7 @@ router.post('/users', bodyParser.json(), addUser);
 
 async function getComments(req, res) {
   try {
-    const [results] = await db.query('SELECT * FROM user_activity');
+    const [results] = await connection.query('SELECT * FROM user_activity');
     res.json(results);
   } catch (error) {
     console.error('Error getting comments:', error);
@@ -29,17 +37,18 @@ async function getComments(req, res) {
   }
 }
 
+
 async function addComment(req, res) {
   try {
     const { userId, content } = req.body;
     const boardId = 1;
 
-    const connection = db.init();
+    // const connection = db.init();
 
     await connection.promise().beginTransaction();
 
     // user_activity 테이블에 댓글 추가
-    const [result] = await db.query(
+    const [result] = await connection.query(
       'INSERT INTO user_activity (board_id, id, comment_content) VALUES (?, ?, ?)',
       [boardId, userId, content]
     );
@@ -48,7 +57,7 @@ async function addComment(req, res) {
 
     if (result.affectedRows === 1) {
       // 새로 추가된 댓글을 다시 읽어옴
-      const [commentsResult] = await db.query('SELECT * FROM user_activity WHERE id = ?', [result.insertId]);
+      const [commentsResult] = await connection.query('SELECT * FROM user_activity WHERE id = ?', [result.insertId]);
 
       if (commentsResult.length > 0) {
         const updatedComment = commentsResult[0];
@@ -72,7 +81,7 @@ async function addComment(req, res) {
 
 async function getUsers(req, res) {
   try {
-    const [results] = await db.query('SELECT * FROM user');
+    const [results] = await connection.query('SELECT * FROM user');
     res.json(results);
   } catch (error) {
     console.error('Error getting users:', error);
@@ -84,7 +93,7 @@ async function addUser(req, res) {
   try {
     const { password, email, provider, provider_id, nickname } = req.body;
 
-    const [result] = await db.query(
+    const [result] = await connection.query(
       'INSERT INTO user (password, email, provider, provider_id, nickname) VALUES (?, ?, ?, ?, ?)',
       [password, email, provider, provider_id, nickname]
     );

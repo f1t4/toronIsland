@@ -86,6 +86,8 @@ app.get('/getTopics', (req, res) => {
 
   //  comments.push(newComment);
 
+  
+// comments의 엔드 포인트 
 app.get('/comments', (req, res) => {
   res.json(comments);
 });

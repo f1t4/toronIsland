@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cors());
 
 // 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
-cron.schedule('*/2 * * * *', async ()=> {
+cron.schedule('*5 * * * *', async ()=> {
     try{
         
         const jsonData = await fs.readFile('postdata.json', 'utf-8');
