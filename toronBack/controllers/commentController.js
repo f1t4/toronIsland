@@ -2,19 +2,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const cors = require('cors');
 const router = express.Router();
-const db = require('../config/db');
-const connection = db.init();
 
-db.connect(connection);
+const connection = require('../config/db').init();
 const app = express();
 
-const cors = require('cors');
 app.use(cors());
 
 
 // // 댓글 목록 조회
-// router.get('/comments', getComments);
+router.get('/comments', getComments);
 
 // 댓글 추가
 router.post('/comments/:boardId', bodyParser.json(), addComment);
