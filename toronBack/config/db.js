@@ -19,5 +19,4 @@ module.exports = {
             else console.log("mySql is connected successfully");
         });
     },
-    db_toron
 }
