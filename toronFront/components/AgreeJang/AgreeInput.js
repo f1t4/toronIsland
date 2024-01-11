@@ -1,13 +1,19 @@
-
+//toronFront/components/AgreeJang/AgreeInput.js
 import React, { useState, useRef, useEffect } from 'react';
 import { Pressable,Image, TouchableOpacity, View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, InputAccessoryView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
 
-const AgreeInput = ({ onCommentAdded }) => {
+
+const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
   const [text, setText] = useState('');
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
-
+  const commentData = {
+    content: text,
+    userId: dynamicUserId,
+    boardId: boardId,
+  };
   const handleCommentSubmit = async () => {
+    
     try {
       if (!text) {
         console.error('댓글 내용이 비어있습니다.');
@@ -15,12 +21,8 @@ const AgreeInput = ({ onCommentAdded }) => {
       }
   
       const serverUrl = 'http://10.0.2.2:3000/comments';
-  
-      const commentData = {
-        username: '사용자명',
-        content: text,
-        boardId: 1,
-      };
+
+     
   
       const response = await fetch(serverUrl, {
         method: 'POST',
@@ -30,6 +32,15 @@ const AgreeInput = ({ onCommentAdded }) => {
         body: JSON.stringify(commentData),
       });
   
+      if (!response.ok) {
+        if (response.status === 404) {
+          // 404 에러에 대한 처리
+        } else {
+          // 기타 에러에 대한 처리
+        }
+        // throw new Error(`댓글 추가 실패 - ${response.status} ${response.statusText}`);
+      }
+  
       const result = await response.json();
       console.log('댓글 추가 응답:', result);
   
@@ -37,10 +48,9 @@ const AgreeInput = ({ onCommentAdded }) => {
   
       setText('');
     } catch (error) {
-      console.error('댓글 추가 에러:', error);
-  
-      // 여기서 Alert.alert 사용
-      Alert.alert('댓글 추가 실패', '댓글을 추가하는 중에 오류가 발생했습니다.');
+      console.error('댓글 추가 에러:', error.message);
+      console.log('서버 에러 메시지:', error.message);
+      console.log(commentData);
     }
   };
 
@@ -76,7 +86,6 @@ const AgreeInput = ({ onCommentAdded }) => {
     <KeyboardAvoidingView
       style={styles.InputContainer}
       behavior={'padding'}
-      keyboardVerticalOffset={statusBarHeight + 50}
     >
       <View style={styles.inputStyle}>
         <TextInput

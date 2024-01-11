@@ -1,6 +1,7 @@
 // models/post.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = db.init();
+db.connect(sequelize);
 
 const Board = sequelize.define('Board', {
   board_id: {

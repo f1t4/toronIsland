@@ -5,10 +5,21 @@ const passport = require('passport');
 const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
+const connection = db.init();
+
+// 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
+const schedule = require('node-schedule');
+const cronjob = require('./controllers/postCotroller')
+
+db.connect(connection);
+
 
 const app = express();
+
+
+app.use(express.json());
 // const port = process.env.PORT || 3000;
-const port = 3001;
+const port = 3000;
 
 // app.use(bodyPdcdarser.json());
 app.use(cors());
@@ -22,7 +33,7 @@ app.get('/', (req, res) => {
 
 //User google log-in logic start
 
-// app.get('/login/auth/google', (req, res) => {
+// app.get('/login/au /google', (req, res) => {
 //   console.log(req);
 //   res.redirect('/login/auth/google/callback');
 // });
@@ -120,19 +131,21 @@ app.post('/selectProfile', (req, res) => {
 
   //  comments.push(newComment);
 
+  
+// comments의 엔드 포인트 
 app.get('/comments', (req, res) => {
   res.json(comments);
 });
 
 app.post('/comments', (req, res) => {
-  const { username, content } = req.body;
+  const { userId, content } = req.body;
 
-  if (!username || !content) {
+  if (!userId || !content) {
     return res.status(400).json({ error: 'Username and content are required' });
   }
   const newComment = {
     id: comments.length + 1,
-    username,
+    userId,
     content,
     createdAt: new Date(),
   };
@@ -142,23 +155,33 @@ app.post('/comments', (req, res) => {
   res.json(newComment);
 });
 
-// //지현
-// const commentController = require('./controllers/commentController');
-// app.use('/api', commentController);
+//지현
+const commentController = require('./controllers/commentController');
+app.use('/comments', commentController);
 
 // 하경
-app.get('/board_data', async(req, res, next)=>{
-  try{
-      const [postData] = await connection.query('select * from board;');
-      res.json(postData);
-      console.log(postData);
-  }catch(error){
-      console.log('Error!!!!!!', error);
-      res.status(500).json({error: 'Error~~~!!'})
+// postContorller.js에서 요청 받고 응답하는 로직
+// 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답 
+app.get('/board_data', async (req, res, next) => {
+  try {
+    const [postData] = await connection.promise().query('SELECT * FROM board');
+    // console.log(postData); // 데이터 확인용 로그
+
+    res.json(postData);
+  } catch (error) {
+    console.error('Error!!!!!!', error);
+    res.status(500).json({ error: 'Error~~~!!', details: error.message });
   }
 });
 
-app.listen(port, () => {
+// 하경 
+// 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
+
+// cron.schedule('*/5 * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
+
+// const job = schedule.scheduleJob('*/5 * * * *', cronjob);
+
+app.listen(port, (err) => {
   if (err) {
     console.error(`Error starting server: ${err}`);
   } else {

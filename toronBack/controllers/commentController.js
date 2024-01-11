@@ -1,61 +1,97 @@
-// toronBack/controllers/commentController.js
-
+//toronBack/controllers/commentController.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const pool = require('../config/db'); 
+
+const cors = require('cors');
 const router = express.Router();
 
-router.get('/comments', async (req, res) => {
+const connection = require('../config/db').init();
+const app = express();
+
+app.use(cors());
+
+
+// // 댓글 목록 조회
+router.get('/comments', getComments);
+
+// 댓글 추가
+router.post('/comments/:boardId', bodyParser.json(), addComment);
+
+// 사용자 목록 조회
+router.get('/users', getUsers);
+
+// 사용자 추가
+router.post('/users', bodyParser.json(), addUser);
+
+
+
+async function getComments(req, res) {
   try {
-    const [results] = await pool.query('SELECT * FROM user_activity');
+    const [results] = await connection.query('SELECT * FROM user_activity');
     res.json(results);
   } catch (error) {
     console.error('Error getting comments:', error);
     res.status(500).json({ error: 'Error getting comments' });
   }
-});
+}
 
-router.post('/comments', bodyParser.json(), async (req, res) => {
-    try {
-      const { username, content } = req.body;
 
-      const [boardResult] = await pool.query(
-        'INSERT INTO board (state, board_content) VALUES (?, ?)',
-        [boardState, boardContent]
-      );
-  
-      const [result] = await pool.query(
-        'INSERT INTO user_activity (board_id, comment_content) VALUES (?, ?, ?)',
-        [boardResult.insertId, userId, content]
-      );
-  
-      const newComment = {
-        id: result.insertId,
-        username,
-        content,
-      };
-      res.json(newComment);
-    } catch (error) {
-      console.error('Error adding comment:', error);
-      res.status(500).json({ error: 'Error adding comment' });
-    }
-  });
-
-router.get('/users', async (req, res) => {
+async function addComment(req, res) {
   try {
-    const [results] = await pool.query('SELECT * FROM user');
+    const { userId, content } = req.body;
+    const boardId = 1;
+
+    // const connection = db.init();
+
+    await connection.promise().beginTransaction();
+
+    // user_activity 테이블에 댓글 추가
+    const [result] = await connection.query(
+      'INSERT INTO user_activity (board_id, id, comment_content) VALUES (?, ?, ?)',
+      [boardId, userId, content]
+    );
+
+    console.log('Comment insertion result:', result);
+
+    if (result.affectedRows === 1) {
+      // 새로 추가된 댓글을 다시 읽어옴
+      const [commentsResult] = await connection.query('SELECT * FROM user_activity WHERE id = ?', [result.insertId]);
+
+      if (commentsResult.length > 0) {
+        const updatedComment = commentsResult[0];
+        res.json(updatedComment);
+      } else {
+        console.error('댓글 추가 후 읽기 실패');
+        res.status(500).json({ error: '댓글 추가 후 읽기 실패' });
+      }
+    } else {
+      await connection.promise().rollback();
+      
+      console.error('댓글 추가 실패: 영향 받은 행이 1이 아님');
+      res.status(500).json({ error: '댓글 추가 실패' });
+    }
+  } catch (error) {
+    console.error('댓글 추가 오류:', error);
+    res.status(500).json({ error: '댓글 추가 오류', details: error.message });
+  }
+}
+
+
+async function getUsers(req, res) {
+  try {
+    const [results] = await connection.query('SELECT * FROM user');
     res.json(results);
   } catch (error) {
     console.error('Error getting users:', error);
     res.status(500).json({ error: 'Error getting users' });
   }
-});
+}
 
-router.post('/users', bodyParser.json(), async (req, res) => {
+async function addUser(req, res) {
   try {
     const { password, email, provider, provider_id, nickname } = req.body;
 
-    const [result] = await pool.query(
+    const [result] = await connection.query(
       'INSERT INTO user (password, email, provider, provider_id, nickname) VALUES (?, ?, ?, ?, ?)',
       [password, email, provider, provider_id, nickname]
     );
@@ -73,6 +109,6 @@ router.post('/users', bodyParser.json(), async (req, res) => {
     console.error('Error adding user:', error);
     res.status(500).json({ error: 'Error adding user' });
   }
-});
+}
 
 module.exports = router;
