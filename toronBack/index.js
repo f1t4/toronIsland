@@ -49,17 +49,17 @@ app.use('/login', userRoutes);
 //[채원] PretoronScreen
 
 // GET route to fetch topics
-app.get('/getTopics', (req, res) => {
-  const sql = 'SELECT * FROM board';
-  db.query(sql, (err, result) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      res.status(500).send('Internal Server Error');
-    } else {
-      res.json(result);
-    }
-  });
-});
+// app.get('/getTopics', (req, res) => {
+//   const sql = 'SELECT * FROM board';
+//   db.query(sql, (err, result) => {
+//     if (err) {
+//       console.error('Error executing query:', err);
+//       res.status(500).send('Internal Server Error');
+//     } else {
+//       res.json(result);
+//     }
+//   });
+// });
 
 //[채원] searchBar 
 // 데이터베이스에서 검색 수행하는 함수
@@ -80,7 +80,46 @@ app.get('/getTopics', (req, res) => {
 //   });
 // };
 
+//[채원 프로필 사진 저장]
+app.use(bodyParser.json());
 
+app.post('/login', (req, res) => {
+  const { email } = req.body;
+
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      if (results.length === 0) {
+        // 사용자가 존재하지 않으면 프로필 선택 화면으로 이동
+        res.json({ shouldSelectProfile: true });
+      } else {
+        // 사용자가 이미 존재하면 홈 화면으로 이동
+        res.json({ shouldSelectProfile: false });
+      }
+    }
+  });
+});
+
+app.post('/selectProfile', (req, res) => {
+  const { email, profileNumber } = req.body;
+
+  db.query('UPDATE users SET profileNumber = ? WHERE email = ?', [profileNumber, email], (err, results) => {
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      if (results.affectedRows > 0) {
+        console.log(`Profile updated successfully for email: ${email}`);
+        res.json({ success: true });
+      } else {
+        console.log(`No profile updated for email: ${email}`);
+        res.json({ success: false });
+      }
+    }
+  });
+});
 
 //이 밑에 코드 res 객체가 어디서 나온 객체인지 모르겠어서 주석 쳐뒀습니다 _감
   //  const newComment = {

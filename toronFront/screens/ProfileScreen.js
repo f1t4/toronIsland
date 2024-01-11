@@ -21,19 +21,61 @@ const ProfileSelectionScreen = () => {
     require('../assets/6.jpg'),
   ];
 
-  const handleProfileSelection = (selectedNumber) => {
-    setUserProfileNumber(selectedNumber);
+  const handleProfileSelection = async (selectedNumber) => {
+    const email = 'qwer@gmail.com'; // 실제 사용자 이메일로 교체
+  
+    // 사용자가 이미 존재하는지 확인
+    const loginResponse = await fetch('http://192.168.0.15:3001/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
+  
+    const loginResult = await loginResponse.json();
+  
+    if (loginResult.shouldSelectProfile) {
+      // 사용자가 존재하지 않으면 프로필 선택 화면으로 이동
+      // 프로필 선택 정보를 서버에 전송
+      const selectProfileResponse = await fetch('http://192.168.0.15:3001/selectProfile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          profileNumber: selectedNumber,
+        }),
+      });
+  
+      const selectProfileResult = await selectProfileResponse.json();
+  
+      if (selectProfileResult.success) {
+        // 프로필 선택이 성공했을 때의 동작
+        navigation.navigate('home');
+      } else {
+        // 실패 시의 동작
+        // 로그인 하라는 컴포넌트 띄우기 등의 처리
+      }
+    } else {
+      // 사용자가 이미 존재하면 홈 화면으로 바로 이동
+      navigation.navigate('home');
+    }
   };
+  
 
-  const renderProfileItem = ({ number, index }) => (
+  const renderProfileItem = ({ item }) => (
     <TouchableOpacity
-    key={number}
-    style={styles.profileItem}
-    onPress={() => handleProfileSelection(number)}
-  >
-    <Image source={imagePaths[index]} style={styles.image} />
-  </TouchableOpacity>
-  )
+      key={item}
+      style={styles.profileItem}
+      onPress={() => handleProfileSelection(item)}
+    >
+      <Image source={imagePaths[item - 1]} style={styles.image} />
+    </TouchableOpacity>
+  );
 
   return (
     <LinearGradient
@@ -62,9 +104,7 @@ const ProfileSelectionScreen = () => {
 
       />
 
-
-
-      <TouchableOpacity style={styles.submitButton}>
+      <TouchableOpacity style={styles.submitButton}  onPress={() => handleProfileSelection(userProfileNumber)}>
         <Text style={{fontSize : 22}}>선택완료</Text>
       </TouchableOpacity>
 

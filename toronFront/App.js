@@ -74,6 +74,7 @@ export default function App() {
       <Stack.Screen name="Board" component={AgreeMain} />
       <Stack.Screen name="Best" component={BestScreen} />
       <Stack.Screen name="Start" component={StartScreen} />
+
     </Stack.Navigator>
   </NavigationContainer>
     // <NavigationContainer>
