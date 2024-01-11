@@ -14,7 +14,7 @@ const AgreeCommentList = ({ onCommentAdded }) => {
             const response = await fetch(serverUrl);
             const data = await response.json();
             setComments(data);
-            console.log(data);
+            // console.log(data);
           } catch (error) {
             console.error('댓글 가져오기 에러:', error);
           }
