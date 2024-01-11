@@ -1,33 +1,23 @@
-
-const mysql = require('mysql2');
 const cors = require('cors');
 const express = require('express');
 const app = express();
-const db = require('../config/db');
-const connection = require('../config/db').init();
+let connection = require('../config/db').init();
+const path = require('path');
 
 app.use(express.json());
 app.use(cors());
-const http = require('http');
 const fs = require('fs').promises;
 
-const port = 3000;
-
-// post.js의 Board 데이터 가져옴
-const { Board } = require('../models/post');
-// 스케줄링 기능 why? 주기적으로 실행되는 작업이 필요하기 때문
-const cron = require('node-cron');
 
 app.use(express.json());
 app.use(cors());
 
-// 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
-cron.schedule('*5 * * * *', async ()=> {
+const cronJob = async () => {
     try{
         
-        const jsonData = await fs.readFile('postdata.json', 'utf-8');
+        const jsonData = await fs.readFile(path.join(__dirname, '..', 'models', 'postdata.json'), 'utf-8');
         const data = JSON.parse(jsonData);
-        
+        console.log(data);
         for (const item of data) {
             const { id, board_content, state } = item;
 
@@ -46,14 +36,12 @@ cron.schedule('*5 * * * *', async ()=> {
             }
         }
     } catch(error){
-        console.log('error inserting data', error.message);
+        console.log('error inserting data', error);
     }finally{
-        await connection.end();
+        
     }
-});
 
-
-
-app.listen(port, (err)=>{
-    console.log(`server running at ${port} port`);
-});
+};
+   
+connection = require('../config/db').init();
+module.exports = cronJob;

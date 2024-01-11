@@ -7,10 +7,15 @@ const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 const connection = db.init();
 
+// 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
+const schedule = require('node-schedule');
+const cronjob = require('./controllers/postCotroller')
+
 db.connect(connection);
 
 
 const app = express();
+
 
 app.use(express.json());
 // const port = process.env.PORT || 3000;
@@ -131,9 +136,11 @@ app.get('/board_data', async (req, res, next) => {
 });
 
 // 하경 
-// const cronjob = require('./controllers/postCotroller');
-// cronjob();
+// 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
 
+// cron.schedule('*/5 * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
+
+// const job = schedule.scheduleJob('*/5 * * * *', cronjob);
 
 app.listen(port, (err) => {
   if (err) {
