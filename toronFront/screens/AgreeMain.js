@@ -16,7 +16,7 @@ import AgreeCommentList from "../components/AgreeJang/AgreeCommentList";
 // C2F4FC 그 다음 : 연하늘 
 
 const  AgreeMain =({navigation})=> {
-    const [dynamicUserId, setDynamicUserId] = useState(null);
+    const [dynamicUserId, setDynamicUserId] = useState([1]);
     const [comments, setComments] = useState([]);
     const [boardId, setBoardId] = useState([1]);
 
@@ -86,7 +86,6 @@ const  AgreeMain =({navigation})=> {
             setComments([...comments, result]);
         } catch (error) {
             console.error('댓글 추가 에러:', error);
-            Alert.alert('댓글 추가 실패', '댓글을 추가하는 중에 오류가 발생했습니다.');
         }
     };
 
