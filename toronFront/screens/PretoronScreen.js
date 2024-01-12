@@ -10,7 +10,9 @@ import { useRoute } from '@react-navigation/native';
 //주제 넣어주는 함수
 
 const PretoronScreen = () => {
-  const [topics, setTopics] = useState([]);
+  // const [topics, setTopics] = useState([]);
+  const[posts, setPosts] = useState([]);
+  
   const route = useRoute();
   console.log('Route Params:', route.params);
   
@@ -19,16 +21,22 @@ const PretoronScreen = () => {
 
   useEffect(() => {
     // 페이지 로드시, 검색 쿼리를 기반으로 주제 데이터 가져오기
-    fetchTopicsData(searchQuery);
+    fetchPostsData(searchQuery);
   }, [searchQuery]);
 
-  const fetchTopicsData = async (query) => {
-    // 검색 쿼리를 기반으로 데이터 가져오기
-    // 이 부분을 수정하여 백엔드 또는 저장소에서 데이터를 가져올 수 있습니다.
-    const topicData = ReadTopics(); // ReadTopics가 주제의 배열을 반환한다고 가정합니다.
-    // 검색 쿼리를 기반으로 주제 필터링
-    const filteredTopics = topicData.filter((item) => item.board_content.includes(query));
-    setTopics(filteredTopics);
+  const fetchPostsData = async (query) => {
+    try {
+      const response = await fetch(`http://172.30.1.100:3000/board_data?query=${query}`);
+      const data = await response.json();
+      
+      // console.log('서버 응답:', response);
+
+      setPosts(data);
+      console.log(data);
+      console.log(data[0].board_content);
+    } catch (error) {
+      console.log('게시물 가져오기 에러', error.message);
+    }
   };
 
   const scrollY = new Animated.Value(0);
@@ -95,7 +103,7 @@ const PretoronScreen = () => {
           })}
           scrollEventThrottle={16}
         >
-          {topics.map((item, index) => (
+          {posts.map((item, index) => (
             <ToronCard
             key={index} // 임의로 index를 key로 사용
             title={item.board_content} // 주제 데이터에서 board_content를 가져와서 title로 사용
