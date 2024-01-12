@@ -4,6 +4,21 @@ import { View, Text, StyleSheet } from 'react-native';
 const ToronCard = ({ date, title, participants }) => {
   const [participantsWidth, setParticipantsWidth] = useState(0);
 
+  // vs로 문자열 나누는 함수
+  const renderText = (text, maxLength) => {
+    const parts = text.split(',');
+    return (
+      <View style={styles.title}>
+        {parts.map((part, index) => (
+          <Text key={index} style={styles.titleText}>
+            {part}
+          </Text>
+        ))}
+      </View>
+    );
+  };
+
+
   //글자 길이 제한 
   const turnText = (text, maxLength) => {
     if (text.length <= maxLength) {
@@ -19,7 +34,7 @@ const ToronCard = ({ date, title, participants }) => {
       // participants 길이에 따라서 달라짐
       // [추후 수정] participants 수에 자동 쉼표 추가 (어렵나?)
       // [채원 수정 : 지금 데이터베이스에 참여자 로직은 없는 관계로, 참여자 있으면 작동 없으면 '참여자 없음' 이라고 표시하도록 삼항 연산자 사용]
-      setParticipantsWidth(participants.toString().length * 10 + 70);
+      setParticipantsWidth((participants.toString() || '').length * 10 + 70);
     }
   }, [participants]);
 
@@ -30,7 +45,7 @@ const ToronCard = ({ date, title, participants }) => {
         <Text style={styles.date}>{date}</Text>
       </View> 
       <View style={styles.titleContainer}>
-        <Text style={styles.title} >{turnText(title, 22)}</Text>
+        <Text style={styles.title} >{renderText(turnText(title, 22))}</Text>
       </View>
 
       <View style={styles.participantsContainer}>
@@ -80,6 +95,12 @@ const styles = StyleSheet.create({
     
   },
   title: {
+    display : "flex",
+    flexDirection : "row",
+    // backgroundColor : 'skyblue'
+  },
+  titleText : {
+    
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -99,17 +120,15 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     height : '40%',
-    marginHorizontal : 10,
+    // marginHorizontal : 10,
     alignItems: 'center', 
     justifyContent : 'center', 
-    overflow :'hidden'
-    // backgroundColor : 'skyblue'
+    overflow :'hidden',
   },
   participantsContainer: {
     justifyContent : 'center',
     alignItems: 'center',
     // backgroundColor : 'tomato'
-
   }
 });
 

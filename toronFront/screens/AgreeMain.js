@@ -56,7 +56,7 @@ const  AgreeMain =({navigation})=> {
 
     const handleCommentAdded = async (newComment) => {
         try {
-            const serverUrl = 'http://10.0.2.2:3000/comments';
+            const serverUrl = 'http://172.30.1.100:3000/comments';
 
             const commentData = {
                 content: newComment.content,

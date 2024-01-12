@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
           justifyContent: 'space-between',
           alignItems: 'center',}}>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Prev</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Best')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Pretoron')}>
             <Text style={{ fontSize: 12, color: 'gray', textAlign: 'right' }}>더보기</Text>
           </TouchableOpacity>
         </View>

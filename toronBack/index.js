@@ -24,6 +24,7 @@ const port = 3000;
 // app.use(bodyPdcdarser.json());
 app.use(cors());
 
+
 const comments = [];
 
 app.get('/', (req, res) => {
@@ -169,7 +170,7 @@ app.post('/comments', (req, res) => {
 app.get('/board_data', async (req, res, next) => {
   try {
     const [postData] = await connection.promise().query('SELECT * FROM board');
-    // console.log(postData); // 데이터 확인용 로그
+    console.log(postData); // 데이터 확인용 로그
 
     res.json(postData);
   } catch (error) {
@@ -184,6 +185,7 @@ app.get('/board_data', async (req, res, next) => {
 // cron.schedule('*/5 * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
 
 // const job = schedule.scheduleJob('*/5 * * * *', cronjob);
+
 
 app.listen(port, (err) => {
   if (err) {
