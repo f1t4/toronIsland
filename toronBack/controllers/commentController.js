@@ -6,16 +6,16 @@ const cors = require('cors');
 const router = express.Router();
 
 const connection = require('../config/db').init();
-const app = express();
 
-app.use(cors());
+router.use(cors());
+router.use(bodyParser.json());
 
 
 // // 댓글 목록 조회
 router.get('/comments', getComments);
 
 // 댓글 추가
-router.post('/comments/:boardId', bodyParser.json(), addComment);
+router.post('/comments', bodyParser.json(), addComment);
 
 // 사용자 목록 조회
 router.get('/users', getUsers);
@@ -27,7 +27,7 @@ router.post('/users', bodyParser.json(), addUser);
 
 async function getComments(req, res) {
   try {
-    const [results] = await connection.query('SELECT * FROM user_activity');
+    const [results] = await connection.query('SELECT comment_id, board_id, id, comment_content, DATE_FORMAT(comment_create, "%Y-%m-%dT%H:%i:%s.000Z") AS createdAt FROM user_activity');
     res.json(results);
   } catch (error) {
     console.error('Error getting comments:', error);
@@ -37,42 +37,31 @@ async function getComments(req, res) {
 
 
 async function addComment(req, res) {
+  await connection.promise().beginTransaction();
+
   try {
-    const { userId, content } = req.body;
-    const boardId = 1;
 
-    // const connection = db.init();
+    const { boardId, userId, content } = req.body;
 
-    await connection.promise().beginTransaction();
+    if (!boardId || !userId || !content) {
+      return res.status(400).json({ error: 'boardId, userId, content are required' });
+    }
 
     // user_activity 테이블에 댓글 추가
     const [result] = await connection.query(
-      'INSERT INTO user_activity (board_id, id, comment_content) VALUES (?, ?, ?)',
+      'INSERT INTO user_activity (board_id, id, comment_content, comment_create) VALUES (?, ?, ?, NOW())',
       [boardId, userId, content]
     );
-
-    console.log('Comment insertion result:', result);
-
-    if (result.affectedRows === 1) {
-      // 새로 추가된 댓글을 다시 읽어옴
-      const [commentsResult] = await connection.query('SELECT * FROM user_activity WHERE id = ?', [result.insertId]);
-
-      if (commentsResult.length > 0) {
-        const updatedComment = commentsResult[0];
-        res.json(updatedComment);
-      } else {
-        console.error('댓글 추가 후 읽기 실패');
-        res.status(500).json({ error: '댓글 추가 후 읽기 실패' });
-      }
-    } else {
-      await connection.promise().rollback();
-      
-      console.error('댓글 추가 실패: 영향 받은 행이 1이 아님');
-      res.status(500).json({ error: '댓글 추가 실패' });
-    }
+  
+    await connection.promise().commit();
+    console.log('Transaction committed.');
+    res.json({ success: true }); 
+  
   } catch (error) {
-    console.error('댓글 추가 오류:', error);
-    res.status(500).json({ error: '댓글 추가 오류', details: error.message });
+    await connection.promise().rollback();
+    console.error('Transaction rolled back:', error);
+    res.status(500).json({ error: '댓글 추가 실패' });
+    throw error; 
   }
 }
 

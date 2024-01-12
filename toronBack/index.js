@@ -131,11 +131,18 @@ app.post('/selectProfile', (req, res) => {
 
   //  comments.push(newComment);
 
+
   
+//지현
 // comments의 엔드 포인트 
 app.get('/comments', (req, res) => {
   res.json(comments);
 });
+
+
+const commentController = require('./controllers/commentController');
+app.use('/comments', commentController);
+
 
 app.post('/comments', (req, res) => {
   const { userId, content } = req.body;
@@ -155,9 +162,6 @@ app.post('/comments', (req, res) => {
   res.json(newComment);
 });
 
-//지현
-const commentController = require('./controllers/commentController');
-app.use('/comments', commentController);
 
 // 하경
 // postContorller.js에서 요청 받고 응답하는 로직
