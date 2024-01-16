@@ -184,7 +184,7 @@ app.get('/board_data', async (req, res, next) => {
 
 // cron.schedule('* * * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
 
-const job = schedule.scheduleJob('* * * * *', cronjob);
+// const job = schedule.scheduleJob('* * * * *', cronjob);
 
 
 app.listen(port, (err) => {
