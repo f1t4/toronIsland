@@ -182,9 +182,9 @@ app.get('/board_data', async (req, res, next) => {
 // 하경 
 // 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
 
-// cron.schedule('*/5 * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
+// cron.schedule('* * * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
 
-// const job = schedule.scheduleJob('*/5 * * * *', cronjob);
+const job = schedule.scheduleJob('* * * * *', cronjob);
 
 
 app.listen(port, (err) => {
