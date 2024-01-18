@@ -7,11 +7,7 @@ import { Alert } from 'react-native';
 
 const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
   const [text, setText] = useState('');
-  const commentData = {
-    content: text,
-    userId: dynamicUserId,
-    boardId: boardId,
-  };
+
   const handleCommentSubmit = async () => {
     
     try {
@@ -22,7 +18,13 @@ const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
   
       const serverUrl = 'http://10.0.2.2:3000/comments';
 
-     
+      const commentData = {
+        content: text,
+        userId: dynamicUserId,
+        boardId: boardId[0],
+      };
+
+      console.log('댓글 데이터:', commentData);
   
       const response = await fetch(serverUrl, {
         method: 'POST',
@@ -30,6 +32,7 @@ const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(commentData),
+        credentials: 'include',
       });
   
       if (!response.ok) {
@@ -42,15 +45,13 @@ const AgreeInput = ({ onCommentAdded, dynamicUserId, boardId }) => {
       }
   
       const result = await response.json();
-      console.log('댓글 추가 응답:', result);
+      console.log('댓글 추가 응답(AgreeInput):', result);
   
       onCommentAdded(result);
   
       setText('');
     } catch (error) {
-      console.error('댓글 추가 에러:', error.message);
-      console.log('서버 에러 메시지:', error.message);
-      console.log(commentData);
+      console.error('댓글 추가 에러:', commentData);
     }
   };
 

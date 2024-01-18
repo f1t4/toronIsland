@@ -14,7 +14,7 @@ const cronjob = require('./controllers/postCotroller')
 db.connect(connection);
 
 
-const app = express();
+const app = express(); 
 
 
 app.use(express.json());
@@ -22,7 +22,9 @@ app.use(express.json());
 const port = 3000;
 
 // app.use(bodyPdcdarser.json());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+}));
 
 
 const comments = [];

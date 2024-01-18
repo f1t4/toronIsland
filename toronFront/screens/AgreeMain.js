@@ -16,16 +16,16 @@ import AgreeCommentList from "../components/AgreeJang/AgreeCommentList";
 // C2F4FC 그 다음 : 연하늘 
 
 const  AgreeMain =({navigation})=> {
-    const [dynamicUserId, setDynamicUserId] = useState([1]);
+    const [dynamicUserId, setDynamicUserId] = useState(1);
     const [comments, setComments] = useState([]);
     const [boardId, setBoardId] = useState([1]);
 
-    // 로그인 후 사용자 정보를 받아와서 dynamicUserId 설정
-    const handleLogin = async (userInfo) => {
-        // 사용자 정보에서 userId 추출
-        const userId = userInfo.id; // 이 예시에서는 사용자 정보에 id가 있다고 가정합니다.
-        setDynamicUserId(userId);
-    };
+    // // 로그인 후 사용자 정보를 받아와서 dynamicUserId 설정
+    // const handleLogin = async (userInfo) => {
+    //     // 사용자 정보에서 userId 추출
+    //     const userId = userInfo.id; // 이 예시에서는 사용자 정보에 id가 있다고 가정합니다.
+    //     setDynamicUserId(userId);
+    // };
 
 
     const styles = StyleSheet.create({
@@ -54,42 +54,6 @@ const  AgreeMain =({navigation})=> {
     }, [navigation]);
 
 
-    const handleCommentAdded = async (newComment) => {
-        try {
-            const serverUrl = 'http://172.30.1.100:3000/comments';
-
-            const commentData = {
-                content: newComment.content,
-                userId: dynamicUserId,
-            };
-
-            const response = await fetch(serverUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(commentData),
-            });
-
-            if (!response.ok) {
-                if (response.status === 404) {
-                  // 404 에러에 대한 처리
-                } else {
-                  // 기타 에러에 대한 처리
-                }
-                throw new Error(`댓글 추가 실패 - ${response.status} ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            console.log('댓글 추가 응답:', result);
-
-            setComments([...comments, result]);
-        } catch (error) {
-            console.error('댓글 추가 에러:', error);
-        }
-    };
-
-
     return(
         <View style={styles.main}>
             <LinearGradient  colors={['rgba(253,200,209,0.3)','rgba(207,186,253,0.3)','rgba(168,241,161,0.3)','rgba(194,244,252,0.3)']}
@@ -107,9 +71,9 @@ const  AgreeMain =({navigation})=> {
                 <AgreeContainer />
             </View>
             <View style={styles.agreeCommentInputContainer}>
-            <AgreeCommentList onCommentAdded={handleCommentAdded} />
+            <AgreeCommentList comments={comments} />
             <AgreeInput
-                onCommentAdded={handleCommentAdded}
+                onCommentAdded={(newComment) => setComments([...comments, newComment])}
                 dynamicUserId={dynamicUserId}
                 boardId={boardId}
             />
