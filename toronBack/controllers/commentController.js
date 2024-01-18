@@ -27,6 +27,7 @@ router.post('/users', bodyParser.json(), addUser);
 
 async function getComments(req, res) {
   try {
+    console.log('Handling getComments request...')
     const [results] = await connection.query('SELECT comment_id, board_id, id, comment_content, DATE_FORMAT(comment_create, "%Y-%m-%dT%H:%i:%s.000Z") AS createdAt FROM user_activity');
     res.json(results);
   } catch (error) {
@@ -40,7 +41,7 @@ async function addComment(req, res) {
   await connection.promise().beginTransaction();
 
   try {
-
+    console.log('Handling addComment request...');
     const { boardId, userId, content } = req.body;
 
     if (!boardId || !userId || !content) {
@@ -50,12 +51,22 @@ async function addComment(req, res) {
     // user_activity 테이블에 댓글 추가
     const [result] = await connection.query(
       'INSERT INTO user_activity (board_id, id, comment_content, comment_create) VALUES (?, ?, ?, NOW())',
-      [boardId, userId, content]
+      [boardId[0], userId, content]
     );
-  
+
     await connection.promise().commit();
     console.log('Transaction committed.');
-    res.json({ success: true }); 
+    
+    const newComment = {
+      id: result.insertId,
+      boardId,
+      userId,
+      content,
+      createdAt: new Date(), 
+    };
+
+
+    res.json(newComment);
   
   } catch (error) {
     await connection.promise().rollback();
@@ -68,6 +79,7 @@ async function addComment(req, res) {
 
 async function getUsers(req, res) {
   try {
+    console.log('Handling getUsers request...');
     const [results] = await connection.query('SELECT * FROM user');
     res.json(results);
   } catch (error) {
@@ -78,6 +90,7 @@ async function getUsers(req, res) {
 
 async function addUser(req, res) {
   try {
+    console.log('Handling addUser request...');
     const { password, email, provider, provider_id, nickname } = req.body;
 
     const [result] = await connection.query(
