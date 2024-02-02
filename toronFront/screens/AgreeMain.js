@@ -70,14 +70,21 @@ const  AgreeMain =({navigation})=> {
             <View style={styles.agreeContainer}>
                 <AgreeContainer />
             </View>
-            <View style={styles.agreeCommentInputContainer}>
-            <AgreeCommentList comments={comments} />
-            <AgreeInput
-                onCommentAdded={(newComment) => setComments([...comments, newComment])}
-                dynamicUserId={dynamicUserId}
-                boardId={boardId}
-            />
-            </View>
+            <View style={{ flex: 2 }}>
+                <View style={{ flex: 7}}>
+                {/* 댓글 리스트 컴포넌트 */}
+                    <AgreeCommentList comments={comments} /> 
+                </View>
+                <View style={{ flex: 3 }}>
+                    {/* 댓글 입력 컴포넌트 */}
+                    <AgreeInput
+                    onCommentAdded={(newComment) => setComments([...comments, newComment])}
+                    dynamicUserId={dynamicUserId}
+                    boardId={boardId}
+                    />
+  </View>
+</View>
+
 
         </View> 
     )

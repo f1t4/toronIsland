@@ -171,7 +171,7 @@ app.post('/comments', (req, res) => {
 // 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답 
 app.get('/board_data', async (req, res, next) => {
   try {
-    const [postData] = await connection.promise().query('SELECT * FROM board');
+    const [postData] = await connection.promise().query('SELECT * FROM board ORDER BY board_create DESC LIMIT 1');
     // console.log(postData); // 데이터 확인용 로그
 
     res.json(postData);
@@ -183,10 +183,9 @@ app.get('/board_data', async (req, res, next) => {
 
 // 하경 
 // 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
+// */1 * * * * : 1분 간격 insert 
 
-// cron.schedule('* * * * *', cronjob, { scheduled: true, timezone: "Asia/Seoul" });
-
-// const job = schedule.scheduleJob('* * * * *', cronjob);
+// const job = schedule.scheduleJob('*/1 * * * *', cronjob);
 
 
 app.listen(port, (err) => {

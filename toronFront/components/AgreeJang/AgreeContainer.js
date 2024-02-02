@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
       fontSize: 12,
       color: 'black',
       fontWeight: '700',
+      // backgroundColor:'red',
   },
   container: {
       // flex: 1,
@@ -62,10 +63,11 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     text:{
-      fontSize: 16,
+      fontSize: 14,
       color: 'black',
       fontWeight: '700',
-      // marginLeft: '20%'
+      // marginLeft: '20%',
+      // backgroundColor: 'blue'
     },
     vs:{
       
@@ -164,9 +166,6 @@ const AgreeContainer =()=>{
         }
       };
       fetchPosts();
-      // const intervalId = setInterval(()=>{
-      //   fetchPosts();
-      // }, 7 * 24 * 60 * 60 * 1000);
       
     return () => {
       // clearInterval(intervalId);

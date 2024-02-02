@@ -22,7 +22,7 @@ const AgreeComment =({comment})=>{
             backgroundColor: 'rgba(255,255,255,0.75)',
             borderRadius: 30,
             elevation: 1,
-            
+            width: '100%'            
         },
         profileImage:{
             // profile image 크기 
