@@ -5,7 +5,7 @@ const db_toron = {
     host: "",
     port: "",
     user: "",
-    password: "!",
+    password: "",
     database: "",
 
 }
