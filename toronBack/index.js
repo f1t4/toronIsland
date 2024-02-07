@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 const connection = db.init();
 
-// 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
+// 하경 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
 const schedule = require('node-schedule');
 const cronjob = require('./controllers/postCotroller')
 
@@ -171,6 +171,7 @@ app.post('/comments', (req, res) => {
 // 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답 
 app.get('/board_data', async (req, res, next) => {
   try {
+    // 가장 최근 데이터(order by)를 응답으로 보냄 
     const [postData] = await connection.promise().query('SELECT * FROM board ORDER BY board_create DESC LIMIT 1');
     // console.log(postData); // 데이터 확인용 로그
 
@@ -184,9 +185,16 @@ app.get('/board_data', async (req, res, next) => {
 // 하경 
 // 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
 // */1 * * * * : 1분 간격 insert 
+// * * * * * : 12시마다 insert 
+// const job = schedule.scheduleJob('* * * * *', cronjob);
 
-// const job = schedule.scheduleJob('*/1 * * * *', cronjob);
+app.get('board_date', async()=>{
+  try{
+    
+  }catch(error){
 
+  }
+})
 
 app.listen(port, (err) => {
   if (err) {
