@@ -8,6 +8,30 @@ import MyScrollView from '../components/Homepage/MyScrollView';
 import SearchBar from '../components/Search.js';
 
 const HomeScreen = ({ navigation }) => {
+  
+  const sortPost = ({}) => {
+    const [additionalTexts, setAdditionalTexts] = useState([]); // useState를 사용하여 추가 텍스트 상태를 정의
+
+
+    useEffect(()=>{
+        fetchPost();
+    },[])
+
+    const fetchPost = async () => {
+      try{
+          const response = await fetch('http:/10.0.2.2:3000/post_sort_data');
+          const data = await response.json();
+
+          const createDate = data.map(item => item.board_create);
+          setAdditionalTexts(createDate);
+          console.log(additionalTexts);
+      }catch(error){
+          console.log(error.message);
+      }
+  };
+}
+
+
   // ScrollView의 참조 및 너비 상태 관리를 위한 상태 변수들
   const scrollViewRef = useRef(null);
   const [scrollViewWidth, setScrollViewWidth] = useState(0);
@@ -24,6 +48,8 @@ const HomeScreen = ({ navigation }) => {
     ['#F2A3C9', '#FFAAD3'],
     ['#8f8f8f', '#959595'] // Best
   ];
+
+ 
 
   const additionalTexts = ['어제', '11월 10일', '11월 8일'];
   const buttonTexts = [
@@ -118,11 +144,13 @@ const HomeScreen = ({ navigation }) => {
                     {buttonTexts[index]}
                   </Text>
                 </TouchableOpacity>
+
                 {index < additionalTexts.length && ( //배열의 길이만큼 버튼에 추가 텍스트를 표시
                   <Text style={{ position: 'absolute', top: 10, left: 10, color: 'black', fontWeight: 'bold' }}>
                     {additionalTexts[index]}
-                  </Text>
-                )}
+                  </Text>)}
+
+
               </LinearGradient>
             </View>
           ))}
