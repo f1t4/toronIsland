@@ -9,7 +9,7 @@ const connection = db.init();
 
 // 하경 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
 const schedule = require('node-schedule');
-const cronjob = require('./controllers/postCotroller')
+const cronjob = require('./models/postCotroller')
 
 db.connect(connection);
 
@@ -168,7 +168,7 @@ app.post('/comments', (req, res) => {
 
 // 하경
 // postContorller.js에서 요청 받고 응답하는 로직
-// 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답 
+// 성공 시 postData(데베 쿼리 결과)를 json 형태로 응답
 app.get('/board_data', async (req, res, next) => {
   try {
     // 가장 최근 데이터(order by)를 응답으로 보냄 
@@ -188,11 +188,20 @@ app.get('/board_data', async (req, res, next) => {
 // * * * * * : 12시마다 insert 
 // const job = schedule.scheduleJob('* * * * *', cronjob);
 
-app.get('board_date', async()=>{
-  try{
-    
-  }catch(error){
 
+// 하경
+// 홈 화면에 보여줄 데이터 정렬 코드 
+// 오늘의 게시물은 /board_data의 응답 결과로 동적 업데이트 하고
+// 이전 세 개의 게시물은 /post_sort_data의 응답 결과로 동적 업데이트 함 
+app.get('/post_sort_data', async(req, res)=>{
+  try{
+    // 가장 최근 데이터는 건너뛰고 그 다음 세 개 데이터만 반환 
+    const [postSortData] = await connection.promise().query('SELECT * FROM board ORDER BY board_create DESC LIMIT 4');
+    res.json(postSortData)
+    console.log(postSortData);
+  }catch(error){
+    console.log('error', error);
+    res.status(500).json({error: 'error 발생 => ', details: error.message});
   }
 })
 
