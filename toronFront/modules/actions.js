@@ -1,4 +1,4 @@
-// action
+// action == 동작을 시키기 위한 type 정의 
 const ADD_POST = 'action/ADD_POST';
 
 // action creator

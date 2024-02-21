@@ -7,6 +7,11 @@ const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 const connection = db.init();
 
+// 하경 상태 관리 테스트 중... 프엔 index.js인가 아고 젠장
+// import { Provider } from 'react-redux';
+// import store from '../toronFront/modules/store';
+
+
 // 하경 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
 const schedule = require('node-schedule');
 const cronjob = require('./models/postCotroller')
@@ -204,6 +209,13 @@ app.get('/post_sort_data', async(req, res)=>{
     res.status(500).json({error: 'error 발생 => ', details: error.message});
   }
 })
+
+// // 하경 테스트 store 사용하기 
+// const Root =()=> {
+//   <Provider store={store}>
+//     <App />
+//   </Provider>
+// }
 
 app.listen(port, (err) => {
   if (err) {

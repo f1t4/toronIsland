@@ -9,27 +9,27 @@ import SearchBar from '../components/Search.js';
 
 const HomeScreen = ({ navigation }) => {
   
-  const sortPost = ({}) => {
-    const [additionalTexts, setAdditionalTexts] = useState([]); // useState를 사용하여 추가 텍스트 상태를 정의
+//   const sortPost = ({}) => {
+//     const [additionalTexts, setAdditionalTexts] = useState([]); // useState를 사용하여 추가 텍스트 상태를 정의
 
 
-    useEffect(()=>{
-        fetchPost();
-    },[])
+//     useEffect(()=>{
+//         fetchPost();
+//     },[])
 
-    const fetchPost = async () => {
-      try{
-          const response = await fetch('http:/10.0.2.2:3000/post_sort_data');
-          const data = await response.json();
+//     const fetchPost = async () => {
+//       try{
+//           const response = await fetch('http:/10.0.2.2:3000/post_sort_data');
+//           const data = await response.json();
 
-          const createDate = data.map(item => item.board_create);
-          setAdditionalTexts(createDate);
-          console.log(additionalTexts);
-      }catch(error){
-          console.log(error.message);
-      }
-  };
-}
+//           const createDate = data.map(item => item.board_create);
+//           setAdditionalTexts(createDate);
+//           console.log(additionalTexts);
+//       }catch(error){
+//           console.log(error.message);
+//       }
+//   };
+// }
 
 
   // ScrollView의 참조 및 너비 상태 관리를 위한 상태 변수들
