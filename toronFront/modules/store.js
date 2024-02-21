@@ -1,12 +1,16 @@
+// reducer 묶기 위해 import 
+import combineReducers from 'redux';
+// redux 정의 라이브러리 (아마도)
 import { configureStore } from '@reduxjs/tookit';
-import actions from './actions';
 
-// 기능별 파일을 불러와서 rootReducer에 컴바인 해서 사용,,,
-// 어렵
+// 내가 작성해 둔 action & redux
+import actions from './actions';
 
 
 const rootReducer = combineReducers({
-
+    actions 
+    // 일단 하나
 });
-const store = configureStore({reducer: actions});
+const store = configureStore({reducer: rootReducer});
+
 export default store;
