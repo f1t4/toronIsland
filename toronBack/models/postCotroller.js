@@ -5,7 +5,6 @@ let connection = require('../config/db').init();
 const path = require('path');
 const fs = require('fs').promises;
 
-const { addPost } = require('../../toronFront/modules/actions.js');
 
 app.use(express.json());
 app.use(cors());
