@@ -2,7 +2,8 @@ import React from "react";
 import { FlatList, StyleSheet, Text, View, StatusBar, Button, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect } from "react";
 import axios from 'axios';
-
+import { addPost } from "../../modules/actions";
+import { connect } from 'react-redux';
 
 const renderText = ({ item }) => {
  // 'vs'를 기준으로 문자열을 분리
@@ -155,7 +156,8 @@ const AgreeContainer =()=>{
           // 원상태: http://10.0.2.2:3000/board_data
           const response = await fetch('http://10.0.2.2:3000/board_data')
           const data = await response.json();
-          
+          const { board_id, state, board_create, board_content } = data;
+          // addPost( board_id, state, board_create, board_content )
           // console.log('서버 응답:', response);
 
           setPosts(data);

@@ -7,9 +7,6 @@ const userRoutes = require('./routes/userRoutes');
 const db = require('./config/db');
 const connection = db.init();
 
-// 하경 상태 관리 테스트 중... 프엔 index.js인가 아고 젠장
-// import { Provider } from 'react-redux';
-// import store from '../toronFront/modules/store';
 
 
 // 하경 스케줄링 기능 - 주기적으로 실행되는 작업이 필요하기 때문
@@ -178,8 +175,8 @@ app.get('/board_data', async (req, res, next) => {
   try {
     // 가장 최근 데이터(order by)를 응답으로 보냄 
     const [postData] = await connection.promise().query('SELECT * FROM board ORDER BY board_create DESC LIMIT 1');
+    
     // console.log(postData); // 데이터 확인용 로그
-
     res.json(postData);
   } catch (error) {
     console.error('Error!!!!!!', error);
@@ -210,12 +207,7 @@ app.get('/post_sort_data', async(req, res)=>{
   }
 })
 
-// // 하경 테스트 store 사용하기 
-// const Root =()=> {
-//   <Provider store={store}>
-//     <App />
-//   </Provider>
-// }
+
 
 app.listen(port, (err) => {
   if (err) {
