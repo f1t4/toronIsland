@@ -7,9 +7,9 @@ const jwt = require('jsonwebtoken');
 const session = require('express-session');
 
 passport.use('google', new GoogleStrategy({
-    clientID : '1082978828191-bhh1rrdv4preg21gtsvkhbtn2pafahnt.apps.googleusercontent.com',
-    clientSecret : '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',
-    callbackURL : 'http://localhost:3000/login/auth/google/callback'
+    clientID : '',
+    clientSecret : '',
+    callbackURL : 'https://887c-59-154-5-58.ngrok-free.app/login/auth/google/callback'
   }, (accessToken, refreshToken, profile, done) => {
       const data = {
           id : profile.id,
@@ -45,3 +45,17 @@ const isAuthenticated = (req, res, next) => {
   };
   
 module.exports = isAuthenticated;
+
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+// passport.use('google', new GoogleStrategy({
+//     clientID: "1082978828191-vnceo5l0ff6c00kki89ta54nh3rsvfs0.apps.googleusercontent.com",
+//     clientSecret: "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",
+//     callbackURL: "https://887c-59-154-5-58.ngrok-free.app/login/auth/google/callback"
+//   },
+//   function(accessToken, refreshToken, profile, cb) {
+//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//       return cb(err, user);
+//     });
+//   }
+// ));

@@ -4,7 +4,7 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const userRoutes = require('./routes/userRoutes');
-const db = require('./config/db');
+const db = require('./config/db.js');
 const connection = db.init();
 
 
@@ -37,14 +37,15 @@ app.get('/', (req, res) => {
 });
 
 //User google log-in logic start
+// app.get('/login/auth/google',
+//   passport.authenticate('google', { scope: ['profile'] }));
 
-// app.get('/login/au /google', (req, res) => {
-//   console.log(req);
-//   res.redirect('/login/auth/google/callback');
-// });
-// app.use(session({secret : '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', resave: true, saveUninitialized: true}));
-// app.use(passport.initialize());
-// app.use(passport.session());
+// app.get('/login/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/' }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   });
 app.use('/login', userRoutes);
 
 //User google log-in logic fin
