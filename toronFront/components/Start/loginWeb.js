@@ -5,7 +5,8 @@ import WebView from 'react-native-webview';
 const LoginWeb = () => {
     return(
         <WebView 
-            source={{uri : `http://192.168.55.76:3000/login/auth/google`}}
+            source={{uri : 'https://887c-59-154-5-58.ngrok-free.app/login/auth/google/callback'}}
+            javaScriptEnabled={true}
             style={styles.webBody} />
     );
 }
