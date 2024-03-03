@@ -13,4 +13,6 @@ const rootReducer = combineReducers({
 });
 const store = configureStore({ reducer: rootReducer });
 
+console.log(store.getState().actions.posts);
+
 export default store;
