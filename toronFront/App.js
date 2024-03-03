@@ -35,9 +35,10 @@ export default function App() {
 
 
   return (
-    // <Provider store={store}>
+    
     <NavigationContainer>
-
+      {/* 상태(state)를 store에 두고 사용하기 위해 태그로 하나 더 감쌌습니다 - 하경 */}
+  <Provider store={store}>  
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} 
                     options={{
@@ -66,8 +67,9 @@ export default function App() {
       <Stack.Screen name="Pretoron" component={PretoronScreen} />
 
     </Stack.Navigator>
+    </Provider>
   </NavigationContainer> 
-  // </Provider>
+  
     // <NavigationContainer>
     //   <Stack.Navigator>
     //     <Stack.Screen name="Home" component={StartScreen} />

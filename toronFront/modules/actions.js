@@ -6,6 +6,7 @@ const ADD_POST = 'action/ADD_POST';
 const addPost = (board_id, currentstate, board_create, content, ) => {
     return{
         type: ADD_POST,
+        // payload: ADD_POST 액션에 대한 추가적인 데이터(정보)
         payload: {
             board_id,
             content,
@@ -17,21 +18,27 @@ const addPost = (board_id, currentstate, board_create, content, ) => {
 
 // 초기 상태 정의 (초기 값: '')
 const initState = {
-    board_id: '',
-    content: '',
-    currentstate: 1,
-    board_create: ''
+    posts:[
+        {board_id: 1, content: 'first post'},
+        {board_id: 2, content: 'second post'},
+        {board_id: 3, content: 'third post'}
+        
+    ]
 }
 
 // 현재 상태와 액션을 받아와 새로운 상태를 반환 
 function presetPostReducer(state = initState, action){
     switch(action.type){
         case 'action/ADD_POST':
-            return{...state, 
-                board_id: action.payload.board_id,
-                content: action.payload.content,
-                currentstate: action.payload.currentstate,
-                board_create: action.payload.board_create
+            return{
+                ...state, 
+                posts: [
+                    ...state.posts,
+                    {board_id: action.payload.board_id,
+                    content: action.payload.content,
+                    }
+                ]
+
             };
         default:
             return state;

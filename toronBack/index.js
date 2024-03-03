@@ -189,7 +189,7 @@ app.get('/board_data', async (req, res, next) => {
 // 00: 00 밤 12시가 되면 실행되는 코드 -> 하루 지나면~의 가정이 되는 것임 
 // */1 * * * * : 1분 간격 insert 
 // * * * * * : 12시마다 insert 
-// const job = schedule.scheduleJob('* * * * *', cronjob);
+// const job = schedule.scheduleJob('*/1 * * * *', cronjob);
 
 
 // 하경
