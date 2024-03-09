@@ -16,12 +16,10 @@ const addPost = (board_id, currentstate, board_create, content, ) => {
     }
 }
 
-// 초기 상태 정의 (초기 값: '')
+// 초기 상태 정의 
 const initState = {
     posts:[
-        {board_id: 1, content: 'first post'},
-        {board_id: 2, content: 'second post'},
-        {board_id: 3, content: 'third post'}
+        {board_id:1,state:1,board_create:"2024-03-03T07:14:00.000Z",board_content:"대학원생 , vs , 대학교 10년"},
         
     ]
 }
