@@ -201,7 +201,6 @@ app.get('/post_sort_data', async(req, res)=>{
     // 가장 최근 데이터는 건너뛰고 그 다음 세 개 데이터만 반환 
     const [postSortData] = await connection.promise().query('SELECT * FROM board ORDER BY board_create DESC LIMIT 4');
     res.json(postSortData)
-    console.log(postSortData);
   }catch(error){
     console.log('error', error);
     res.status(500).json({error: 'error 발생 => ', details: error.message});

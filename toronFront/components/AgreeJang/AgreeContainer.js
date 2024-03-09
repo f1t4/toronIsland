@@ -149,8 +149,8 @@ const AgreeContainer =()=>{
   // Redux 액션 디스패치 : store로 보내는 친구 
   const dispatch = useDispatch();
 
-  const[posts, setPosts] = useState([]);
-
+  // const[posts, setPosts] = useState([]);
+  const posts = useSelector(state => state.posts)
 
 
     useEffect(()=>{
@@ -161,10 +161,13 @@ const AgreeContainer =()=>{
           const response = await fetch('http://10.0.2.2:3000/board_data')
           const data = await response.json();
 
-          setPosts(data);
+          // setPosts(data);
+
+          const postData = data[0];
 
           //action으로 보낼 값들 : 게시물 정보 
-          const { board_id, state, board_create, board_content } = data;
+          const { board_id, state, board_create, board_content } = postData;
+
           // addPost => toronFront>modules>actions.js
           const newPostAction = addPost(board_id, state, board_create, board_content);
           dispatch(newPostAction);
