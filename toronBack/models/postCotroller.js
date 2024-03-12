@@ -33,7 +33,7 @@ const setCurrentIndex = async (index) => {
     }
 };
 
-const cronJob = async () => {
+const cronJob = async (req, res) => {
     try {
         const jsonData = await fs.readFile(path.join(__dirname, '..', 'models', 'postdata.json'), 'utf-8');
         const data = JSON.parse(jsonData);
@@ -47,6 +47,10 @@ const cronJob = async () => {
                 const insertId = result.insertId;
                 console.log(`Data successfully inserted.`);
                 await setCurrentIndex((currentIndex + 1) % data.length);
+                
+                
+
+               
             } else {
                 console.log('JSON id does not match currentIndex.');
             }
