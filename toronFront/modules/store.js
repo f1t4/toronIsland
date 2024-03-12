@@ -4,15 +4,15 @@ import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { presetPostReducer } from './actions';
 
-// 내가 작성해 둔 action & redux
-import actions from './actions';
 
 const rootReducer = combineReducers({
-    actions: presetPostReducer
+    posts: presetPostReducer
     // 일단 하나
 });
 const store = configureStore({ reducer: rootReducer });
 
-console.log(store.getState().actions.posts);
+// console.log(store.getState().posts.posts[0].board_content);
+// console.log(store.getState().posts);
+
 
 export default store;

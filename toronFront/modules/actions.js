@@ -1,4 +1,5 @@
 // action 타입 정의 == 동작을 시키기 위한 type 정의 
+
 const ADD_POST = 'action/ADD_POST';
 
 // action creator
@@ -27,16 +28,18 @@ const initState = {
 // 현재 상태와 액션을 받아와 새로운 상태를 반환 
 function presetPostReducer(state = initState, action){
     switch(action.type){
-        case 'action/ADD_POST':
+        case 'ADD_POST':
             return{
                 ...state, 
+                // 새로운 데이터만 포함하는 배열로 상태를 설정
                 posts: [
-                    ...state.posts,
-                    {board_id: action.payload.board_id,
-                    content: action.payload.content,
+                    {
+                        board_id: action.payload.board_id,
+                        state: action.payload.state,
+                        board_create: action.payload.board_create,
+                        board_content: action.payload.board_content
                     }
                 ]
-
             };
         default:
             return state;

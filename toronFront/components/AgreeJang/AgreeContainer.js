@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux'
 import { addPost } from "../../modules/actions";
 
-
+// 0312 다음에 해야 할 거... posts의 board_content 내용 화면에 보이게 하기 
 
 const renderText = ({ item }) => {
  // 'vs'를 기준으로 문자열을 분리
@@ -146,45 +146,49 @@ const styles = StyleSheet.create({
 });
 
 const AgreeContainer =()=>{
-  // Redux 액션 디스패치 : store로 보내는 친구 
-  const dispatch = useDispatch();
 
-  // const[posts, setPosts] = useState([]);
-  const posts = useSelector(state => state.posts)
+  const [posts, setPostData] = useState(null);
 
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:3000/board_data');
+      const data = await response.json();
+      setPostData(data[0]);
+      // console.log(posts);
+    } catch (error) {
+      console.log('게시물 가져오기 에러', error.message);
+    }
+  };
 
-    useEffect(()=>{
-      const fetchPosts = async ()=>{
-        try{
-          // 서버 바꿨으면 다시 원상태로 돌린 다음에 푸쉬 부탁드려용 
-          // 원상태: http://10.0.2.2:3000/board_data
-          const response = await fetch('http://10.0.2.2:3000/board_data')
-          const data = await response.json();
+  fetchPosts();
+}, []);
 
-          // setPosts(data);
+const dispatch = useDispatch();
 
-          const postData = data[0];
+  const updateState = () => {
+    if (!posts) return; // posts가 없으면 업데이트하지 않음
+    const { board_id, state, board_create, board_content } = posts;
+    const newPostAction = addPost(board_id, state, board_create, board_content);
+    dispatch(newPostAction);
+  };
 
-          //action으로 보낼 값들 : 게시물 정보 
-          const { board_id, state, board_create, board_content } = postData;
-
-          // addPost => toronFront>modules>actions.js
-          const newPostAction = addPost(board_id, state, board_create, board_content);
-          dispatch(newPostAction);
-          
-          // console.log(data);
-        }catch(error){
-          console.log('게시물 가져오기 에러', error.message);
-          
-        }
-      };
-      fetchPosts();
-      
-    return () => {
-      // clearInterval(intervalId);
-    };
-    }, []);
-
+  
+useEffect(() => {
+  const intervalId = setInterval(() => {
+    const now = new Date();
+    if (now.getHours() === 12 && now.getMinutes() === 0) {
+      updateState();
+    }
+  }, 1000 * 60);
+  return () => clearInterval(intervalId);
+}, []); // dispatch를 의존성 배열에서 제거
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     updateState();
+  //   }, 1000 * 10);
+  //   return () => clearInterval(intervalId);
+  // }, [dispatch]); // dispatch를 의존성 배열에 추가
 
     return(
         <View style={[styles.container,{flexDirection: 'row',}]}>
