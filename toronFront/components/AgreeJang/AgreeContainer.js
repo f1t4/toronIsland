@@ -7,21 +7,7 @@ import { addPost } from "../../modules/actions";
 
 // 0312 다음에 해야 할 거... posts의 board_content 내용 화면에 보이게 하기 
 
-const renderText = ({ item }) => {
- // 'vs'를 기준으로 문자열을 분리
- const parts = item.board_content.split(',');
 
- return (
-   <View style={styles.textBox}>
-     {/* 분리된 각 부분을 <Text>로 렌더링 */}
-     {parts.map((part, index) => (
-       <Text key={index} style={part === ' vs ' ? styles.vsText : styles.text}>
-         {part}
-       </Text>
-     ))}
-   </View>
- );
-};
 
 const styles = StyleSheet.create({
   vsText:{
@@ -154,7 +140,7 @@ useEffect(() => {
     try {
       const response = await fetch('http://10.0.2.2:3000/board_data');
       const data = await response.json();
-      setPostData(data[0]);
+      setPostData(data);
       // console.log(posts);
     } catch (error) {
       console.log('게시물 가져오기 에러', error.message);
@@ -164,23 +150,56 @@ useEffect(() => {
   fetchPosts();
 }, []);
 
+
+const renderText = ({ item }) => {
+  // 'vs'를 기준으로 문자열을 분리
+  const parts = item.board_content.split(',');
+
+ // 출력이 되어야 데이터를 잘 받고 있단 의미인데 출력이 안 됨 
+  // console.log("게시물 내용:", item.board_content); // 데이터 출력 확인
+ 
+  return (
+    <View style={styles.textBox}>
+      {/* 분리된 각 부분을 <Text>로 렌더링 */}
+      {parts.map((part, index) => (
+        <Text key={index} style={part === ' vs ' ? styles.vsText : styles.text}>
+          {part}
+        </Text>
+      ))}
+    </View>
+  );
+ };
+
+// redux의 dispatch 함수를 가져옴 
 const dispatch = useDispatch();
 
+// posts 상태가 존재하면 상태 업데이트 
   const updateState = () => {
     if (!posts) return; // posts가 없으면 업데이트하지 않음
+    // 구조 분해 할당: 속성 추출
     const { board_id, state, board_create, board_content } = posts;
+    // 액션 생성 함수(addPost)를 호출해 새로운 액션 객체 생성
+    // 매개 변수로 board_id, state, board_create, board_content 전달
     const newPostAction = addPost(board_id, state, board_create, board_content);
+    // 앞서 생성한 액션 객체를 store의 상태 업데이트
     dispatch(newPostAction);
   };
 
   
 useEffect(() => {
+  // 주기적 코드 실행 == intervalId
   const intervalId = setInterval(() => {
+    // 현재 시간 가져옴 == now
     const now = new Date();
+    // 현재 시간이 12시 0분인지 확인 == 12시면 코드 실행
     if (now.getHours() === 12 && now.getMinutes() === 0) {
+    // 함수 호출 == 상태 업데이트 
       updateState();
     }
+    // 매 분마다 코드 실행
   }, 1000 * 60);
+  // 컴포넌트가 언마운트가 될 때 intervalId에 할당된 인터벌 제거 
+  // 인터벌 제거: 메모리 누수를 방지 
   return () => clearInterval(intervalId);
 }, []); // dispatch를 의존성 배열에서 제거
   // useEffect(() => {
@@ -208,7 +227,6 @@ useEffect(() => {
              renderItem={renderText}
             keyExtractor={(item) => item.board_id.toString()}/>
 
-            
             {/* </ScrollView> */}
 
             <View style={styles.AgreeButton}>
